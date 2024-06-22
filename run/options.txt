@@ -33,10 +33,10 @@ damageTiltStrength:1.0
 highContrast:false
 narratorHotkey:true
 gamma:0.5
-renderDistance:12
-simulationDistance:12
+renderDistance:20
+simulationDistance:20
 entityDistanceScaling:1.0
-guiScale:0
+guiScale:3
 particles:0
 maxFps:260
 graphicsMode:1
@@ -47,7 +47,7 @@ renderClouds:"false"
 resourcePacks:["fabric"]
 incompatibleResourcePacks:[]
 lastServer:
-lang:zh_cn
+lang:en_us
 soundDevice:""
 chatVisibility:0
 chatOpacity:1.0
@@ -120,7 +120,7 @@ key_key.hotbar.6:key.keyboard.6
 key_key.hotbar.7:key.keyboard.7
 key_key.hotbar.8:key.keyboard.8
 key_key.hotbar.9:key.keyboard.9
-soundCategory_master:0.29304636
+soundCategory_master:0.304635761589404
 soundCategory_music:0.0
 soundCategory_record:1.0
 soundCategory_weather:1.0

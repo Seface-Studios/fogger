@@ -1,45 +1,11 @@
-# kaleidoscope - 万花筒
-**中文** **|** [**English**](README_en.md)
-
-这是一个可以修改方块轮廓线颜色、迷雾颜色、天空颜色、水体颜色、水下迷雾颜色的模组，未来将会添加更多可修改的颜色。
-
-
+# Fogger Mod
+A fork of the original mod [Kaleidoscope](https://github.com/1024-byteeeee/Kaleidoscope)
 
 ---
+<div>
+  <!-- <img align="right" height="64" width="64" src="https://raw.githubusercontent.com/Seface-Blocks/more-blocks-mod/main/.github/assets/icon_64.gif" title="More Blocks Icon"> -->
+  <img align="right" height="64" width="64" src="https://media.discordapp.net/attachments/1214009345419776050/1214985059153608756/Thumb_Mine_2024.gif?ex=65fb1a03&is=65e8a503&hm=77fc44086e8207785832a0802d2fe81d3ee1e05edb6f5c1c8fb3e3d78ae55586&" title="More Blocks Icon">
 
-
-
-# 指令
-
-- **/kaleidoscope sky [value]**
-  - 用于修改天空颜色，使用16位RGB代码。
-  
-- **/kaleidoscope sky [true/false]**
-  - 用于开启/关闭修改天空颜色。
-  
-- **/kaleidoscope fog [value]**
-  - 用于修改迷雾颜色，使用16位RGB代码。
-  
-- **/kaleidoscope fog [true/false]**
-  - 用于开启/关闭修改迷雾颜色。
-  
-- **/kaleidoscope water [value]**
-  - 用于修改水体颜色，使用16位RGB代码。
-  
-- **/kaleidoscope water [true/false]**
-  - 用于开启/关闭修改水体颜色。
-  
-- **/kaleidoscope waterFog [value]**
-  - 用于修改水下迷雾颜色，使用16位RGB代码。
-  
-- **/kaleidoscope waterFog [true/false]**
-  - 用于开启/关闭修改水下迷雾颜色。
-  
-- **/kaleidoscope blockOutline [red] [green] [blue] [alpha]**
-  - 用于修改方块轮廓的RGB颜色以及其透明度。
-
-- **/kaleidoscope blockOutline [true/false]**
-  - 用于开启/关闭修改方块轮廓颜色。
-
-- **/kaleidoscope help**
-  - 查看指令帮助。
+<h3>Seface Studios</h3>
+  <p><a href="mailto:contact@sefacestudios.net">contact@sefacestudios.net</a> · <a title="X/Twitter" href="https://x.com/SefaceStudios">@SefaceStudios</a></p>
+</div>

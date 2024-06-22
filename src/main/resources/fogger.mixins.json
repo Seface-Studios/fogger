@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8.5",
+  "package": "net.sefacestudios.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "biomeColor.BiomeEffectsMixin",
+    "blockOutlineColor.WorldRendererAccessor",
+    "blockOutlineColor.WorldRenderMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
