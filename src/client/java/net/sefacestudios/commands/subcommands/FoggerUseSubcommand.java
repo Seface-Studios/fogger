@@ -11,19 +11,22 @@ import net.sefacestudios.fogpack.FogpackManager;
 
 public class FoggerUseSubcommand {
     public static int execute(CommandContext<FabricClientCommandSource> ctx) {
-        MinecraftClient client = ctx.getSource().getClient();
         String identifier = ctx.getArgument("fogpack", String.class);
         Fogpack fogpack = FogpackManager.getFogpackFromIdentifier(identifier);
 
         if (fogpack == null) {
-            ctx.getSource().getPlayer().sendMessage(Text.translatable("fogger.message.invalidFogPackName", identifier));
+            ctx.getSource().getPlayer().sendMessage(
+                    Text.literal("[!] ")
+                            .append(
+                                    Text.translatable("fogger.message.invalidFogPackName", identifier)
+                            ).formatted(Formatting.RESET)
+
+
+            );
             return 1;
         }
 
         FogpackManager.applyFogpack(fogpack);
-
-        //ctx.getSource().getPlayer().sendMessage(Text.literal(FogpackManager.getAppliedFogpack().getPath()));
-       // FoggerClient.getConfig().setAppliedFogpack(identifier);
 
         ctx.getSource().getPlayer().sendMessage(Text.literal(""));
         ctx.getSource().getPlayer().sendMessage(Text.literal(fogpack.getName()).formatted(Formatting.BOLD));

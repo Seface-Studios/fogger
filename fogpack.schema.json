@@ -1,13 +1,12 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-
   "definitions": {
     "GenericConfiguration": {
       "type": "object",
       "properties": {
         "color": {
           "type": "string",
-          "pattern": "^#(?[0-9a-fA-F]{3}){1,2}$",
+          "pattern": "^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$",
           "description": "Hexadecimal value of the color to be applied.",
           "default": "#FF00FF"
         },
@@ -16,15 +15,106 @@
           "type": "array",
           "default": ["any"],
           "description": "A list of biomes that colors will be applied to.",
-          "items": [
+          "uniqueItems": true,
+
+          "oneOf": [
             {
-              "type": "string",
-              "pattern": "^(?[a-z]*:[a-z_]*)+$"
+              "items": {
+                "type": "string",
+                "description": "Any biome will have this fog applied.",
+                "enum": ["any"]
+              },
+              
+              "minItems": 1,
+              "maxItems": 1
+            },
+            {
+              "items": {
+                "not": { "enum": ["any"] },
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The vanilla biome identifier.",
+                    "enum": [
+                      "minecraft:badlands",
+                      "minecraft:bamboo_jungle",
+                      "minecraft:basalt_deltas",
+                      "minecraft:beach",
+                      "minecraft:birch_forest",
+                      "minecraft:cherry_grove",
+                      "minecraft:cold_ocean",
+                      "minecraft:crimson_forest",
+                      "minecraft:dark_forest",
+                      "minecraft:deep_cold_ocean",
+                      "minecraft:deep_dark",
+                      "minecraft:deep_frozen_ocean",
+                      "minecraft:deep_lukewarm_ocean",
+                      "minecraft:deep_ocean",
+                      "minecraft:desert",
+                      "minecraft:dripstone_caves",
+                      "minecraft:end_barrens",
+                      "minecraft:end_highlands",
+                      "minecraft:end_midlands",
+                      "minecraft:eroded_badlands",
+                      "minecraft:flower_forest",
+                      "minecraft:forest",
+                      "minecraft:frozen_ocean",
+                      "minecraft:frozen_peaks",
+                      "minecraft:frozen_river",
+                      "minecraft:grove",
+                      "minecraft:ice_spikes",
+                      "minecraft:jagged_peaks",
+                      "minecraft:jungle",
+                      "minecraft:lukewarm_ocean",
+                      "minecraft:lush_caves",
+                      "minecraft:mangrove_swamp",
+                      "minecraft:meadow",
+                      "minecraft:mushroom_fields",
+                      "minecraft:nether_wastes",
+                      "minecraft:ocean",
+                      "minecraft:old_growth_birch_forest",
+                      "minecraft:old_growth_pine_taiga",
+                      "minecraft:old_growth_spruce_taiga",
+                      "minecraft:plains",
+                      "minecraft:river",
+                      "minecraft:savanna",
+                      "minecraft:savanna_plateau",
+                      "minecraft:small_end_islands",
+                      "minecraft:snowy_beach",
+                      "minecraft:snowy_plains",
+                      "minecraft:snowy_slopes",
+                      "minecraft:snowy_taiga",
+                      "minecraft:soul_sand_valley",
+                      "minecraft:sparse_jungle",
+                      "minecraft:stony_peaks",
+                      "minecraft:stony_shore",
+                      "minecraft:sunflower_plains",
+                      "minecraft:swamp",
+                      "minecraft:taiga",
+                      "minecraft:the_end",
+                      "minecraft:the_void",
+                      "minecraft:warm_ocean",
+                      "minecraft:warped_forest",
+                      "minecraft:windswept_forest",
+                      "minecraft:windswept_gravelly_hills",
+                      "minecraft:windswept_hills",
+                      "minecraft:windswept_savanna",
+                      "minecraft:wooded_badlands"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "description": "The custom biome identifier.",
+                    "pattern": "^[a-zA-Z_]+:[a-zA-Z_]+$"
+                  }
+                ]
+              },
+              "minItems": 1
             }
           ]
         }
       },
-      
+
       "required": ["color", "biomes"]
     },
 
@@ -36,8 +126,10 @@
           "properties": {
             "distance": {
               "type": "integer",
-              "description": "The distance the fog will be in relation to the player. This option has the same Render Distance logic, the difference is that it will only be applicable to fog.",
-              "default": 16
+              "description": "The distance (in chunks) the fog will be in relation to the player. This option has the same Render Distance logic, the difference is that it will only be applicable to fog.",
+              "default": 16,
+              "minimum": 2,
+              "maximum": 32
             }
           }
         }
@@ -57,17 +149,17 @@
       "type": "string",
       "description": "The Fogpack identifier. This identifier must be unique and in the format 'namespace:identifier'.",
       "default": "namespace:identifier",
-      "pattern": "^(?:(?:(?!minecraft|minecon))+[a-z]*:[a-z_]*)+$"
+      "pattern": "^(?:(?:(?!minecraft|minecon|fogger))+[a-z]*:[a-z_]*)+$"
     },
 
     "description": {
       "type": "string",
-      "description": "A brief description."
+      "description": "A brief description of Fogpack."
     },
 
     "authors": {
       "type": "array",
-      "description": "Everyone involved in setting up the Fogpack.",
+      "description": "Everyone involved in setting up this Fogpack.",
       "items": [
         { "type": "string" }
       ]

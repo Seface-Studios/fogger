@@ -35,7 +35,10 @@ import org.apache.logging.log4j.Logger;
 public class FoggerClient implements ClientModInitializer {
     public static final String MOD_NAME = "Fogger";
     public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
-    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    public static final Gson GSON = new GsonBuilder()
+            .setPrettyPrinting()
+            .serializeNulls()
+            .create();
 
     @Getter
     public static final FoggerConfig.Config config = new FoggerConfig.Config();

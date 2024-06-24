@@ -23,9 +23,12 @@ package net.sefacestudios.config;
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.util.math.Vec3d;
 import net.sefacestudios.FoggerClient;
 import net.sefacestudios.fogpack.Fogpack;
 import net.sefacestudios.fogpack.FogpackManager;
+import net.sefacestudios.utils.SavedPositions;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -33,18 +36,21 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FoggerConfig {
 
     public static final Path FOGPACK_PATH = FabricLoader.getInstance().getGameDir().resolve("fogpacks");
     public static final Path FOGPACK_CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("fogger.json");
 
-
-    //private static final String CONFIG_FILE = FOGPACK_PATH.resolve("colors.json").toString();
-
     public static class Config {
         @SerializedName("applied_fogpack")
         private String appliedFogpack = "fogger:vanilla";
+
+        @Getter
+        @SerializedName("saved_positions")
+        private ArrayList<SavedPositions> savedPositions = new ArrayList<>();
 
         public static void createOrUpdate(boolean force, FoggerConfig.Config instance) {
             if (Files.exists(FOGPACK_CONFIG_PATH) && !force) return;
@@ -59,9 +65,10 @@ public class FoggerConfig {
             createOrUpdate(true, this);
         }
 
-        public static FoggerConfig.Config getAppliedFogpack() {
+        public static Fogpack getAppliedFogpack() {
             try (Reader reader = new FileReader(FOGPACK_CONFIG_PATH.toFile())) {
-                return FoggerClient.GSON.fromJson(reader, FoggerConfig.Config.class);
+                String identifier = FoggerClient.GSON.fromJson(reader, Config.class).appliedFogpack;
+                return FogpackManager.getFogpackFromIdentifier(identifier);
             } catch (IOException e) {}
 
             return null;
@@ -70,67 +77,9 @@ public class FoggerConfig {
 
     public static void initialize() {
         FoggerConfig.Config.createOrUpdate(false, new FoggerConfig.Config());
+
+
+
+        FogpackManager.applyFogpack(FoggerConfig.Config.getAppliedFogpack(), true);
     }
-
-
-
-    public static void loadFromConfig() {
-        //MinecraftClient.getInstance().options.load();
-        //Fogger.LOGGER.info(client.player.getName().toString());
-        /*createConfigPath();
-        try (Reader reader = new FileReader(CONFIG_FILE)) {
-            ConfigData config = gson.fromJson(reader, ConfigData.class);
-            if (config != null) {
-                loadConfig(config);
-            }
-        } catch (IOException e) {
-            FoggerClient.LOGGER.warn("Failed to load configuration" + e);
-        }*/
-    }
-
-    /*public static void saveToConfig() {
-        createConfigPath();
-        ConfigData config = new ConfigData();
-        saveConfig(config);
-        try (Writer writer = new FileWriter(CONFIG_FILE)) {
-            gson.toJson(config, writer);
-        } catch (IOException e) {
-            FoggerClient.LOGGER.warn("Failed to save configuration" + e);
-        }
-    }*/
-
-    /*private static void createConfigPath() {
-        try {
-            if (!Files.exists(FOGPACK_PATH)) {
-                Files.createDirectories(FOGPACK_PATH);
-                Files.createFile(FOGPACK_PATH.resolve("colors.json"));
-            }
-        } catch (IOException e) {
-            FoggerClient.LOGGER.warn("Failed to creat configuration" + e);
-        }
-    }*/
-
-    /*private static void loadConfig(ConfigData config) {
-        skyConfigData.loadFromConfig(config);
-        fogConfigData.loadFromConfig(config);
-        waterConfigData.loadFromConfig(config);
-        waterFogConfigData.loadFromConfig(config);
-        blockOutlineConfigData.loadFromConfig(config);
-    }
-
-    private static void saveConfig(ConfigData config) {
-        skyConfigData.saveToConfig(config);
-        fogConfigData.saveToConfig(config);
-        waterConfigData.saveToConfig(config);
-        waterFogConfigData.saveToConfig(config);
-        blockOutlineConfigData.saveToConfig(config);
-    }
-
-    public static class ConfigData {
-        public SkyConfigData skyConfigData = new SkyConfigData();
-        public FogConfigData fogConfigData = new FogConfigData();
-        public WaterConfigData waterConfigData = new WaterConfigData();
-        public WaterFogConfigData waterFogConfigData = new WaterFogConfigData();
-        public BlockOutlineConfigData blockOutlineConfigData = new BlockOutlineConfigData();
-    }*/
 }

@@ -16,12 +16,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class FogpackManager {
+    public static final String VANILLA_FOG_PACK = "fogger:vanilla";
     private static final String FOG_PACK_SUFFIX = ".fogpack.json";
     
     @Getter private static Fogpack appliedFogpack = null;
-    @Getter private static final Collection<Fogpack> loadedFogPacks = new ArrayList<>();
+    @Getter private static Collection<Fogpack> loadedFogPacks;
 
     public static void loadOrReloadFogPacks() {
+        loadedFogPacks = new ArrayList<>();
         addBuiltInFogpacks();
 
         File fogPacksFolder = FoggerConfig.FOGPACK_PATH.toFile();
@@ -56,10 +58,25 @@ public class FogpackManager {
     }
 
     public static void applyFogpack(Fogpack fogpack) {
+        applyFogpack(fogpack, false);
+    }
+
+    public static void applyFogpack(String identifier) {
+        for (Fogpack fogpack : getLoadedFogPacks()) {
+            if (fogpack.getIdentifier().equals(identifier)) {
+                applyFogpack(fogpack);
+            }
+        }
+    }
+
+    public static void applyFogpack(Fogpack fogpack, boolean ignoreReload) {
         appliedFogpack = fogpack;
 
         FoggerClient.getConfig().setAppliedFogpack(fogpack);
-        MinecraftClient.getInstance().reloadResources();
+
+        if (!ignoreReload) {
+            MinecraftClient.getInstance().reloadResources();
+        }
     }
 
     @Nullable
