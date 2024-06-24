@@ -18,15 +18,13 @@
  * along with Kaleidoscope. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.sefacestudios.event;
+package net.sefacestudios.registry;
 
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
-import net.sefacestudios.config.FoggerConfig;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
+import net.sefacestudios.commands.FoggerCommand;
 
-public class ClientStartEvent {
-    public static void event() {
-       //ClientTickEvents.START_WORLD_TICK.register(world -> FoggerConfig.loadFromConfig(MinecraftClient.getInstance()));
-
-       ClientLifecycleEvents.CLIENT_STARTED.register(client -> { FoggerConfig.initialize(); });
+public class FoggerCommands {
+    public static void register() {
+        ClientCommandRegistrationCallback.EVENT.register((FoggerCommand::register));
     }
 }

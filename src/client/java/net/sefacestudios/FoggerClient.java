@@ -20,19 +20,32 @@
 
 package net.sefacestudios;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import lombok.Getter;
 import net.fabricmc.api.ClientModInitializer;
-import net.sefacestudios.commands.RegisterCommands;
+import net.sefacestudios.config.FoggerConfig;
+import net.sefacestudios.fogpack.FogpackManager;
+import net.sefacestudios.registry.FoggerCommands;
 import net.sefacestudios.event.ClientStartEvent;
+import net.sefacestudios.registry.FoggerKeybinds;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class FoggerClient implements ClientModInitializer {
     public static final String MOD_NAME = "Fogger";
     public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
+    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+
+    @Getter
+    public static final FoggerConfig.Config config = new FoggerConfig.Config();
 
     @Override
     public void onInitializeClient() {
+        FoggerKeybinds.register();
+        FoggerCommands.register();
+
+        FogpackManager.loadOrReloadFogPacks();
         ClientStartEvent.event();
-        RegisterCommands.register();
     }
 }

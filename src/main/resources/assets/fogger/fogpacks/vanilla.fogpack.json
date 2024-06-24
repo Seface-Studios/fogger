@@ -1,0 +1,9 @@
+{
+  "version": "1.0.0",
+  "name": "Default",
+  "identifier": "fogger:vanilla",
+  "description": "The default look and feel of Minecraft Fog (not so built-in).",
+  "authors": ["Mojang Studios"],
+
+  "config": {}
+}

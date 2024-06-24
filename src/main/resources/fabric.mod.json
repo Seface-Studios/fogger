@@ -4,20 +4,28 @@
   "version": "0.0.1",
   "name": "Fogger",
   "description": "Change various colors with commands",
-  "authors": ["1024_byteeeee", "Seface Studios"],
+  "authors": ["1024_byteeeee"],
+  "contributors": ["Seface Studios"],
   "contact": {
-    "homepage": "https://github.com/1024-byteeeee",
-    "sources": "https://github.com/1024-byteeeee/Kaleidoscope",
-    "issues": "https://github.com/1024-byteeeee/Kaleidoscope/issues"
+    "homepage": "https://sefacestudios.net",
+    "sources": "https://github.com/Seface-Studios/fogger",
+    "issues": "https://github.com/Seface-Studios/fogger/issues"
   },
+
   "icon": "assets/fogger/icon.png",
   "license": "LGPL-3.0",
   "environment": "client",
   "entrypoints": {
     "client": ["net.sefacestudios.FoggerClient"]
   },
-
-  "mixins": ["fogger.mixins.json"],
+  "accessWidener": "fogger.accesswidener",
+  "mixins": [
+    "fogger.mixins.json",
+    {
+      "config": "fogger.client.mixins.json",
+      "environment": "client"
+    }
+  ],
   "depends": {
     "minecraft": "1.20.4",
     "fabric": ">=0.97.1+1.20.4"

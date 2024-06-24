@@ -1,0 +1,89 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+
+  "definitions": {
+    "GenericConfiguration": {
+      "type": "object",
+      "properties": {
+        "color": {
+          "type": "string",
+          "pattern": "^#(?[0-9a-fA-F]{3}){1,2}$",
+          "description": "Hexadecimal value of the color to be applied.",
+          "default": "#FF00FF"
+        },
+
+        "biomes": {
+          "type": "array",
+          "default": ["any"],
+          "description": "A list of biomes that colors will be applied to.",
+          "items": [
+            {
+              "type": "string",
+              "pattern": "^(?[a-z]*:[a-z_]*)+$"
+            }
+          ]
+        }
+      },
+      
+      "required": ["color", "biomes"]
+    },
+
+    "FogConfiguration": {
+      "allOf": [
+        { "$ref": "#/definitions/GenericConfiguration" },
+        {
+          "type": "object",
+          "properties": {
+            "distance": {
+              "type": "integer",
+              "description": "The distance the fog will be in relation to the player. This option has the same Render Distance logic, the difference is that it will only be applicable to fog.",
+              "default": 16
+            }
+          }
+        }
+      ]
+    }
+  },
+
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Current version of Fogpack."
+    },
+    "name": { "type": "string" },
+
+    "identifier": {
+      "type": "string",
+      "description": "The Fogpack identifier. This identifier must be unique and in the format 'namespace:identifier'.",
+      "default": "namespace:identifier",
+      "pattern": "^(?:(?:(?!minecraft|minecon))+[a-z]*:[a-z_]*)+$"
+    },
+
+    "description": {
+      "type": "string",
+      "description": "A brief description."
+    },
+
+    "authors": {
+      "type": "array",
+      "description": "Everyone involved in setting up the Fogpack.",
+      "items": [
+        { "type": "string" }
+      ]
+    },
+
+    "config": {
+      "type": "object",
+      "description": "All the Fogpack configuration.",
+      "properties": {
+        "sky": { "$ref": "#/definitions/GenericConfiguration" },
+        "fog": { "$ref": "#/definitions/FogConfiguration" },
+        "water": { "$ref": "#/definitions/GenericConfiguration" },
+        "water_fog": { "$ref": "#/definitions/GenericConfiguration" }
+      }
+    }
+  },
+
+  "required": ["version", "name", "identifier", "description", "authors", "config"]
+}

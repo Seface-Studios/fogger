@@ -10,10 +10,14 @@ base {
 	archivesName = project.archives_base_name
 }
 
-repositories {}
+repositories {
+	mavenCentral()
+}
 
 loom {
 	splitEnvironmentSourceSets()
+
+	accessWidenerPath = file("src/main/resources/fogger.accesswidener")
 
 	mods {
 		"kaleidoscope" {
@@ -33,6 +37,9 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
+	// Lombok
+	compileOnly 'org.projectlombok:lombok:1.18.32'
+	annotationProcessor 'org.projectlombok:lombok:1.18.32'
 }
 
 processResources {

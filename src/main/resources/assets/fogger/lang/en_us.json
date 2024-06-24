@@ -1,4 +1,7 @@
 {
-  "kaleidoscope.command.kaleidoscope.help.doc": "Command documentation:",
-  "kaleidoscope.command.kaleidoscope.help.url": "https://github.com/1024-byteeeee/Kaleidoscope/blob/master/README_en.md"
+  "fogger.key.categories.fogger": "Fogger",
+  "fogger.key.openFogPacks": "Open Fog Packs",
+  "fogger.fogpacks.openFolder": "Open Fog Packs Folder",
+
+  "fogger.message.invalidFogPackName": "The fogpack \"%s\" cannot be loaded or does not exist. If you have imported them, you need to reload them with /fogger reload"
 }

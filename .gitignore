@@ -29,6 +29,4 @@ bin/
 *.DS_Store
 
 # fabric
-
 run/*
-!run/options.txt
