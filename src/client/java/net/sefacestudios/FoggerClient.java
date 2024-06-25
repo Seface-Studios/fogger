@@ -32,13 +32,17 @@ import net.sefacestudios.registry.FoggerKeybinds;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.lang.reflect.Modifier;
+
 public class FoggerClient implements ClientModInitializer {
-    public static final String MOD_NAME = "Fogger";
-    public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
     public static final Gson GSON = new GsonBuilder()
             .setPrettyPrinting()
+            .excludeFieldsWithModifiers(Modifier.STATIC)
             .serializeNulls()
             .create();
+
+    @Getter
+    private static final FogpackManager fogpackManager = new FogpackManager();
 
     @Getter
     public static final FoggerConfig.Config config = new FoggerConfig.Config();
@@ -48,7 +52,7 @@ public class FoggerClient implements ClientModInitializer {
         FoggerKeybinds.register();
         FoggerCommands.register();
 
-        FogpackManager.loadOrReloadFogPacks();
+        getFogpackManager().loadOrReloadFogpacks();
         ClientStartEvent.event();
     }
 }

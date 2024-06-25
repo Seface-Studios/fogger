@@ -57,9 +57,4 @@ public abstract class BiomeEffectsMixin {
     private int getWaterFogColor(int original) {
         return FogpackManager.getAppliedFogpack().getConfig().getWaterFog().getColor(original);
     }
-
-    private static boolean isVanillaFogpack() {
-        Fogpack fogpack = FogpackManager.getAppliedFogpack();
-        return fogpack == null || fogpack.getIdentifier().equals(FogpackManager.VANILLA_FOGPACK);
-    }
 }

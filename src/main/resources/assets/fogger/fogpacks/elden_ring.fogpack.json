@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "name": "Elden Ring",
   "identifier": "seface:elden_ring",
-  "description": "",
+  "description": "I am the warrior jar known as Alexander. Iron Fist Alexander, in fact.",
   "authors": ["Seface Studios"],
 
   "config": {
@@ -12,7 +12,6 @@
     },
 
     "fog": {
-      "distance": 16,
       "color": "#FFD879"
     }
   }

@@ -10,7 +10,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class FogpackProviders {
     public static CompletableFuture<Suggestions> getUseSuggestions(CommandContext<FabricClientCommandSource> ctx, SuggestionsBuilder bld) throws CommandSyntaxException {
-        for (Fogpack fogPack : FogpackManager.getLoadedFogPacks()) {
+        for (Fogpack fogPack : FogpackManager.getLoadedFogpacks()) {
             bld.suggest(String.valueOf(fogPack.getIdentifier()));
         }
 

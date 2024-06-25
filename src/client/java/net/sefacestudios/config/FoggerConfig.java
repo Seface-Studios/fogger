@@ -23,18 +23,12 @@ package net.sefacestudios.config;
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.math.Vec3d;
-import net.sefacestudios.FoggerClient;
+import net.sefacestudios.Fogger;
 import net.sefacestudios.fogpack.Fogpack;
 import net.sefacestudios.fogpack.FogpackManager;
+import net.sefacestudios.utils.FoggerUtils;
 import net.sefacestudios.utils.SavedPositions;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Reader;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
@@ -49,52 +43,31 @@ public class FoggerConfig {
         @SerializedName("latest_water_color")
         private int latestWaterColor = 0;
 
+        private static final Config data = FoggerUtils.getData(FoggerConfig.Config.class, FOGPACK_CONFIG_PATH);
+
         @Getter
         @SerializedName("saved_positions")
         private ArrayList<SavedPositions> savedPositions = new ArrayList<>();
 
-        public static void createOrUpdate(boolean force, FoggerConfig.Config instance) {
-            if (Files.exists(FOGPACK_CONFIG_PATH) && !force) return;
-
-            try (FileWriter writer = new FileWriter(FOGPACK_CONFIG_PATH.toFile())) {
-                FoggerClient.GSON.toJson(instance, writer);
-            } catch (IOException e) {}
-        }
-
         public void setAppliedFogpack(Fogpack fogpack) {
             this.appliedFogpack = fogpack.getIdentifier();
-            createOrUpdate(true, this);
+            FoggerUtils.createOrUpdate(FoggerConfig.Config.class, FOGPACK_CONFIG_PATH, this, true);
         }
 
         public void setLatestWaterColor(int color) {
             this.latestWaterColor = color;
-            createOrUpdate(true, this);
-        }
-
-        private static Config getData() {
-            try (Reader reader = new FileReader(FOGPACK_CONFIG_PATH.toFile())) {
-                return FoggerClient.GSON.fromJson(reader, Config.class);
-            } catch (IOException e) {}
-
-            return null;
+            FoggerUtils.createOrUpdate(FoggerConfig.Config.class, FOGPACK_CONFIG_PATH, this, true);
         }
 
         public static Fogpack getAppliedFogpack() {
-            Config config = getData();
-            return FogpackManager.getFogpackFromIdentifier(config.appliedFogpack);
+            return FogpackManager.getFogpackFromIdentifier(data.appliedFogpack);
         }
 
-        public static int getLatestWaterColor() {
-            FoggerClient.LOGGER.info(getData().latestWaterColor);
-            return getData().latestWaterColor;
-        }
+        public static int getLatestWaterColor() { return data.latestWaterColor; }
     }
 
     public static void initialize() {
-        FoggerConfig.Config.createOrUpdate(false, new FoggerConfig.Config());
-
-
-
+        FoggerUtils.createOrUpdate(FoggerConfig.Config.class, FOGPACK_CONFIG_PATH);
         FogpackManager.applyFogpack(FoggerConfig.Config.getAppliedFogpack(), true);
     }
 }

@@ -12,7 +12,6 @@
     },
 
     "fog": {
-      "distance": 16,
       "color": "#FE608E"
     }
   }

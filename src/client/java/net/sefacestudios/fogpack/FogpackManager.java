@@ -4,14 +4,13 @@ import com.google.common.io.Resources;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import net.minecraft.client.MinecraftClient;
+import net.sefacestudios.Fogger;
 import net.sefacestudios.FoggerClient;
 import net.sefacestudios.config.FoggerConfig;
+import net.sefacestudios.utils.FoggerUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,61 +20,54 @@ public class FogpackManager {
     private static final String FOG_PACK_SUFFIX = ".fogpack.json";
     
     @Getter private static Fogpack appliedFogpack = null;
-    @Getter private static Collection<Fogpack> loadedFogPacks;
+    @Getter private static Collection<Fogpack> loadedFogpacks;
+
+    public FogpackManager() {}
 
     @SneakyThrows
-    public static void loadOrReloadFogPacks() {
-        loadedFogPacks = new ArrayList<>();
-        addBuiltInFogpacks();
+    public void loadOrReloadFogpacks() {
+        loadedFogpacks = new ArrayList<>();
+        File gameDirFogpacksFolder = FoggerConfig.FOGPACK_PATH.toFile();
 
-        File fogPacksFolder = FoggerConfig.FOGPACK_PATH.toFile();
-
-        if (!fogPacksFolder.isDirectory()) return;
-
-        File[] fogPacks = fogPacksFolder.listFiles((dir, name) -> name.endsWith(FogpackManager.FOG_PACK_SUFFIX));
-
-        if (fogPacks == null) return;
-
-        for (File fogPack : fogPacks) {
-            String fogPackPath = fogPack.getPath();
-
-            try (Reader reader = new FileReader(fogPackPath)) {
-                Fogpack fogPackConfig = FoggerClient.GSON.fromJson(reader, Fogpack.class)
-                        .setPath(fogPackPath);
-
-                loadedFogPacks.add(fogPackConfig);
-            } catch (IOException ignored) {}
-        }
-    }
-
-    @SneakyThrows
-    public static void addBuiltInFogpacks() {
         URI resourcesURI = Resources.getResource("assets/fogger/fogpacks/").toURI();
-        File resourcesFolder = new File(resourcesURI);
+        File builtInFogpacksFolder = new File(resourcesURI);
 
-        if (!resourcesFolder.isDirectory()) return;
-
-        File[] fogPacks = resourcesFolder.listFiles();
-        if (fogPacks == null) return;
-
-        for (File fogPack : fogPacks) {
-            String fogPackPath = fogPack.getPath();
-
-            try (Reader reader = new FileReader(fogPackPath)) {
-                loadedFogPacks.add(
-                        FoggerClient.GSON.fromJson(reader, Fogpack.class)
-                                .setPath(fogPackPath)
-                );
-            } catch (IOException e) {}
-        }
+        this
+          .loadOrReloadFogpacksFrom(gameDirFogpacksFolder)
+          .loadOrReloadFogpacksFrom(builtInFogpacksFolder);
     }
+
+    public FogpackManager loadOrReloadFogpacksFrom(File directory) {
+        if (!directory.isDirectory()) {
+            Fogger.LOGGER.warn("The path " + directory + " is not a directory!");
+            return this;
+        }
+
+        File[] fogpacks = directory.listFiles((dir, name) -> name.endsWith(FogpackManager.FOG_PACK_SUFFIX));
+
+        if (fogpacks == null) {
+            Fogger.LOGGER.warn("No fogpacks were found in the directory: " + directory);
+            return this;
+        }
+
+        for (File fogpack : fogpacks) {
+            loadedFogpacks.add(
+                    FoggerUtils.getData(Fogpack.class, fogpack.toPath())
+            );
+        }
+
+        return this;
+    }
+
+
+
 
     public static void applyFogpack(Fogpack fogpack) {
         applyFogpack(fogpack, false);
     }
 
     public static void applyFogpack(String identifier) {
-        for (Fogpack fogpack : getLoadedFogPacks()) {
+        for (Fogpack fogpack : getLoadedFogpacks()) {
             if (fogpack.getIdentifier().equals(identifier)) {
                 applyFogpack(fogpack);
             }
@@ -96,7 +88,7 @@ public class FogpackManager {
 
     @Nullable
     public static Fogpack getFogpackFromIdentifier(String identifier) {
-        for (Fogpack fogPack : loadedFogPacks) {
+        for (Fogpack fogPack : loadedFogpacks) {
             if (fogPack.getIdentifier().equals(identifier)) return fogPack;
         }
 

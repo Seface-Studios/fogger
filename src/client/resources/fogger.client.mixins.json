@@ -2,7 +2,10 @@
   "required": true,
   "package": "net.sefacestudios.mixin",
   "compatibilityLevel": "JAVA_21",
-  "client": ["BiomeEffectsMixin"],
+  "client": [
+    "BackgroundRendererMixin",
+    "BiomeEffectsMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }

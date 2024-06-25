@@ -1,10 +1,12 @@
 package net.sefacestudios.registry;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.render.BackgroundRenderer;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -36,7 +38,6 @@ public class FoggerKeybinds {
 
     private static void openFogPacksLogic(MinecraftClient client) {
         while (FoggerKeybinds.openFogPacksList.wasPressed()) {
-            client.player.sendMessage(Text.literal("AAA"));
         }
     }
 }
