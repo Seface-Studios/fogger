@@ -6,10 +6,18 @@
       "type": "object",
       "properties": {
         "color": {
-          "type": "string",
-          "pattern": "^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$",
-          "description": "Hexadecimal value of the color to be applied.",
-          "default": "#FF00FF"
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$",
+              "description": "Hexadecimal value of the color to be applied.",
+              "default": "#FF00FF"
+            },
+            {
+              "type": "null",
+              "default": null
+            }
+          ]
         }
       },
 
@@ -71,7 +79,7 @@
       "type": "string",
       "description": "The Fogpack identifier. This identifier must be unique and in the format 'namespace:identifier'.",
       "default": "namespace:identifier",
-      "pattern": "^(?:(?:(?!minecraft|minecon|fogger))+[a-z]*:[a-z_]*)+$"
+      "pattern": "^(?:(?:(?!minecraft|minecon|mojang|mojang_studios|mojangstudios|fogger|seface|seface_studios|sefacestudios))+[a-z]*:[a-z_]*)+$"
     },
 
     "description": {

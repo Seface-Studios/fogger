@@ -43,7 +43,7 @@ public class FoggerConfig {
         @SerializedName("latest_water_color")
         private int latestWaterColor = 0;
 
-        private static final Config data = FoggerUtils.getData(FoggerConfig.Config.class, FOGPACK_CONFIG_PATH);
+        private static transient final Config data = FoggerUtils.getData(FoggerConfig.Config.class, FOGPACK_CONFIG_PATH);
 
         @Getter
         @SerializedName("saved_positions")

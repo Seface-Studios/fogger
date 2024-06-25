@@ -37,7 +37,7 @@ import java.lang.reflect.Modifier;
 public class FoggerClient implements ClientModInitializer {
     public static final Gson GSON = new GsonBuilder()
             .setPrettyPrinting()
-            .excludeFieldsWithModifiers(Modifier.STATIC)
+            .excludeFieldsWithModifiers(Modifier.TRANSIENT)
             .serializeNulls()
             .create();
 

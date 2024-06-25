@@ -37,7 +37,6 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(BiomeEffects.class)
 public abstract class BiomeEffectsMixin {
 
-
     @ModifyReturnValue(method = "getSkyColor", at = @At("RETURN"))
     private int getSkyColor(int original) {
         return FogpackManager.getAppliedFogpack().getConfig().getSky().getColor(original);

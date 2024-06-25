@@ -9,8 +9,8 @@ import net.sefacestudios.fogpack.FogpackManager;
 
 public class FoggerReloadSubcommand {
     public static int execute(CommandContext<FabricClientCommandSource> ctx) {
-        FoggerClient.getFogpackManager().loadOrReloadFogpacks();
         Fogpack fogpack = FogpackManager.getFogpackFromIdentifier(FoggerConfig.Config.getAppliedFogpack().getIdentifier());
+        FoggerClient.getFogpackManager().loadOrReloadFogpacks();
 
         FogpackManager.applyFogpack(fogpack);
 

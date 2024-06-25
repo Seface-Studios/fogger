@@ -1,7 +1,12 @@
 {
   "fogger.key.categories.fogger": "Fogger",
-  "fogger.key.openFogPacks": "Open Fog Packs",
-  "fogger.fogpacks.openFolder": "Open Fog Packs Folder",
+  "fogger.key.openFogPacks": "Open Fogpacks",
+  "fogger.fogpacks.openFolder": "Open Fogpacks Folder",
 
-  "fogger.message.invalidFogPackName": "The fogpack \"%s\" cannot be loaded or does not exist. If you have imported them, you need to reload them with /fogger reload"
+  "fogger.message.invalidFogPackName": "The Fogpack \"%s\" cannot be loaded or does not exist. If you have imported them, you need to reload with /fogger reload",
+
+  "fogger.message.fogpackAlreadyExists": "A Fogpack with the identifier \"%s\" already exists. Please, try another one.",
+  "fogger.message.notAllowedNamespace": "The namespace \"%s\" is not free-use. Please, try another one.",
+  "fogger.message.baseFogpackFileGenerated": "%s.fogpack.json was generated at your fogpacks folder."
+
 }

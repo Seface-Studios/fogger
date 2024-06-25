@@ -1,5 +1,5 @@
 {
-  "$schema": "../../fogpack.schema.v1.json",
+  "$schema": "../../../../../../fogpack.schema.v1.json",
   "version": "1.0.0",
   "name": "Miami Vibes",
   "identifier": "seface:miami_vibes",

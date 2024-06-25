@@ -25,6 +25,8 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.command.CommandRegistryAccess;
+import net.minecraft.command.argument.IdentifierArgumentType;
+import net.sefacestudios.commands.subcommands.FoggerGenerateSubcommand;
 import net.sefacestudios.commands.subcommands.FoggerReloadSubcommand;
 import net.sefacestudios.commands.subcommands.FoggerUseSubcommand;
 import net.sefacestudios.fogpack.FogpackManager;
@@ -42,15 +44,26 @@ public class FoggerCommand {
                             )
                     )
 
+                    // GENERATE SUBCOMMAND
+                    .then(ClientCommandManager.literal("generate")
+                            .then(ClientCommandManager.argument("identifier", IdentifierArgumentType.identifier())
+                                    .then(ClientCommandManager.argument("name", StringArgumentType.greedyString())
+                                            .executes(FoggerGenerateSubcommand::execute)
+                                    )
+                            )
+                    )
+
+                    // RELOAD SUBCOMMAND
+                    .then(ClientCommandManager.literal("reload")
+                            .executes(FoggerReloadSubcommand::execute)
+                    )
+
+                    // RESET SUBCOMMAND
                     .then(ClientCommandManager.literal("reset")
                             .executes(context -> {
                                 FogpackManager.applyFogpack(FogpackManager.VANILLA_FOGPACK);
                                 return 1;
                             })
-                    )
-
-                    .then(ClientCommandManager.literal("reload")
-                            .executes(FoggerReloadSubcommand::execute)
                     )
 
             // Set sky color

@@ -1,9 +1,28 @@
 {
+  "$schema": "../../../../../../fogpack.schema.v1.json",
   "version": "1.0.0",
   "name": "Default",
   "identifier": "minecraft:vanilla",
   "description": "The default look and feel of Minecraft Fog (built-in).",
   "authors": ["Mojang Studios"],
 
-  "config": {}
+  "config": {
+    "sky": {
+      "color": null
+    },
+
+    "fog": {
+      "distance": -1,
+      "start_multiplier": 0,
+      "color": null
+    },
+
+    "water": {
+      "color": null
+    },
+
+    "water_fog": {
+      "color": null
+    }
+  }
 }
