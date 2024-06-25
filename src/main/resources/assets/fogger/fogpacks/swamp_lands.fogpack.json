@@ -1,0 +1,19 @@
+{
+  "$schema": "../../fogpack.schema.v1.json",
+  "version": "1.0.0",
+  "name": "Swamp Lands",
+  "identifier": "seface:swamp_lands",
+  "description": "",
+  "authors": ["Seface Studios"],
+
+  "config": {
+    "sky": {
+      "color": "#ABD2C8"
+    },
+
+    "fog": {
+      "distance": 16,
+      "color": "#67917A"
+    }
+  }
+}

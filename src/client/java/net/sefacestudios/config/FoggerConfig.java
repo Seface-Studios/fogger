@@ -37,16 +37,17 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.List;
 
 public class FoggerConfig {
-
     public static final Path FOGPACK_PATH = FabricLoader.getInstance().getGameDir().resolve("fogpacks");
     public static final Path FOGPACK_CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("fogger.json");
 
     public static class Config {
         @SerializedName("applied_fogpack")
-        private String appliedFogpack = "fogger:vanilla";
+        private String appliedFogpack = FogpackManager.VANILLA_FOGPACK;
+
+        @SerializedName("latest_water_color")
+        private int latestWaterColor = 0;
 
         @Getter
         @SerializedName("saved_positions")
@@ -65,13 +66,27 @@ public class FoggerConfig {
             createOrUpdate(true, this);
         }
 
-        public static Fogpack getAppliedFogpack() {
+        public void setLatestWaterColor(int color) {
+            this.latestWaterColor = color;
+            createOrUpdate(true, this);
+        }
+
+        private static Config getData() {
             try (Reader reader = new FileReader(FOGPACK_CONFIG_PATH.toFile())) {
-                String identifier = FoggerClient.GSON.fromJson(reader, Config.class).appliedFogpack;
-                return FogpackManager.getFogpackFromIdentifier(identifier);
+                return FoggerClient.GSON.fromJson(reader, Config.class);
             } catch (IOException e) {}
 
             return null;
+        }
+
+        public static Fogpack getAppliedFogpack() {
+            Config config = getData();
+            return FogpackManager.getFogpackFromIdentifier(config.appliedFogpack);
+        }
+
+        public static int getLatestWaterColor() {
+            FoggerClient.LOGGER.info(getData().latestWaterColor);
+            return getData().latestWaterColor;
         }
     }
 

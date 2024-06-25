@@ -6,9 +6,20 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeKeys;
 import net.sefacestudios.utils.IFoggerGameOptionsMixin;
 import org.lwjgl.glfw.GLFW;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class FoggerKeybinds {
@@ -25,11 +36,7 @@ public class FoggerKeybinds {
 
     private static void openFogPacksLogic(MinecraftClient client) {
         while (FoggerKeybinds.openFogPacksList.wasPressed()) {
-            /*IFoggerGameOptionsMixin options = (IFoggerGameOptionsMixin) client.options;
-            options.getAppliedFogpack().setValue(UUID.randomUUID().toString());
-            ((GameOptions) options).write();*/
-
-            client.player.sendMessage(client.player.getName(), false);
+            client.player.sendMessage(Text.literal("AAA"));
         }
     }
 }

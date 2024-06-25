@@ -26,7 +26,6 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.command.CommandRegistryAccess;
 import net.sefacestudios.commands.subcommands.FoggerReloadSubcommand;
-import net.sefacestudios.commands.subcommands.FoggerResetSubcommand;
 import net.sefacestudios.commands.subcommands.FoggerUseSubcommand;
 import net.sefacestudios.fogpack.FogpackManager;
 import net.sefacestudios.fogpack.FogpackProviders;
@@ -45,7 +44,7 @@ public class FoggerCommand {
 
                     .then(ClientCommandManager.literal("reset")
                             .executes(context -> {
-                                FogpackManager.applyFogpack(FogpackManager.VANILLA_FOG_PACK);
+                                FogpackManager.applyFogpack(FogpackManager.VANILLA_FOGPACK);
                                 return 1;
                             })
                     )

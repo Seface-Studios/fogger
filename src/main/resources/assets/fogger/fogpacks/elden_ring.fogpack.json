@@ -1,0 +1,19 @@
+{
+  "$schema": "../../fogpack.schema.v1.json",
+  "version": "1.0.0",
+  "name": "Elden Ring",
+  "identifier": "seface:elden_ring",
+  "description": "",
+  "authors": ["Seface Studios"],
+
+  "config": {
+    "sky": {
+      "color": "#E7EBB5"
+    },
+
+    "fog": {
+      "distance": 16,
+      "color": "#FFD879"
+    }
+  }
+}

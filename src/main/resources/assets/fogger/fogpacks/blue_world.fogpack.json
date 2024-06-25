@@ -1,0 +1,19 @@
+{
+  "$schema": "../../fogpack.schema.v1.json",
+  "version": "1.0.0",
+  "name": "Blue World",
+  "identifier": "seface:blue_world",
+  "description": "",
+  "authors": ["Seface Studios"],
+
+  "config": {
+    "sky": {
+      "color": "#095473"
+    },
+
+    "fog": {
+      "distance": 16,
+      "color": "#5B95AA"
+    }
+  }
+}

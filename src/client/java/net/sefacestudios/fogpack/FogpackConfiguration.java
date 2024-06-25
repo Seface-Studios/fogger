@@ -11,24 +11,26 @@ import java.util.List;
 @Getter
 @Setter
 public class FogpackConfiguration {
-    private ColorConfiguration sky = new ColorConfiguration("", "any");
-    private FogConfiguration fog = new FogConfiguration(16, "", "any");
-    private ColorConfiguration water = new ColorConfiguration("", "any");
+    private ColorConfiguration sky = new ColorConfiguration(null);
+    private FogConfiguration fog = new FogConfiguration(16, null);
+    private ColorConfiguration water = new ColorConfiguration(null);
 
     @SerializedName("water_fog")
-    private ColorConfiguration waterFog = new ColorConfiguration("", "any");
+    private ColorConfiguration waterFog = new ColorConfiguration(null);
 
     public static class ColorConfiguration {
         private final String color;
-        @Getter private final List<String> biomes;
 
-        protected ColorConfiguration(String color, String ...biomes) {
+        protected ColorConfiguration(String color) {
             this.color = color;
-            this.biomes = Arrays.asList(biomes);
         }
 
         public int getColor() {
-            return Color.decode(this.color).getRGB();
+            return this.color != null ? Color.decode(this.color).getRGB() : 0;
+        }
+
+        public int getColor(int original) {
+            return this.color != null ? Color.decode(this.color).getRGB() : original;
         }
     }
 
@@ -36,8 +38,8 @@ public class FogpackConfiguration {
     public static class FogConfiguration extends ColorConfiguration {
         private final int distance;
 
-        protected FogConfiguration(int distance, String color, String... biomes) {
-            super(color, biomes);
+        protected FogConfiguration(int distance, String color) {
+            super(color);
             this.distance = distance;
 
         }

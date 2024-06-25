@@ -2,6 +2,7 @@ package net.sefacestudios.fogpack;
 
 import com.google.common.io.Resources;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import net.minecraft.client.MinecraftClient;
 import net.sefacestudios.FoggerClient;
 import net.sefacestudios.config.FoggerConfig;
@@ -11,17 +12,18 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.net.URL;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 
 public class FogpackManager {
-    public static final String VANILLA_FOG_PACK = "fogger:vanilla";
+    public static final String VANILLA_FOGPACK = "minecraft:vanilla";
     private static final String FOG_PACK_SUFFIX = ".fogpack.json";
     
     @Getter private static Fogpack appliedFogpack = null;
     @Getter private static Collection<Fogpack> loadedFogPacks;
 
+    @SneakyThrows
     public static void loadOrReloadFogPacks() {
         loadedFogPacks = new ArrayList<>();
         addBuiltInFogpacks();
@@ -46,15 +48,26 @@ public class FogpackManager {
         }
     }
 
+    @SneakyThrows
     public static void addBuiltInFogpacks() {
-        String vanillaFogpack = Resources.getResource("assets/fogger/fogpacks/vanilla.fogpack.json").getPath();
+        URI resourcesURI = Resources.getResource("assets/fogger/fogpacks/").toURI();
+        File resourcesFolder = new File(resourcesURI);
 
-        try (Reader reader = new FileReader(vanillaFogpack)) {
-            loadedFogPacks.add(
-                    FoggerClient.GSON.fromJson(reader, Fogpack.class)
-                        .setPath(vanillaFogpack)
-            );
-        } catch (IOException e) {}
+        if (!resourcesFolder.isDirectory()) return;
+
+        File[] fogPacks = resourcesFolder.listFiles();
+        if (fogPacks == null) return;
+
+        for (File fogPack : fogPacks) {
+            String fogPackPath = fogPack.getPath();
+
+            try (Reader reader = new FileReader(fogPackPath)) {
+                loadedFogPacks.add(
+                        FoggerClient.GSON.fromJson(reader, Fogpack.class)
+                                .setPath(fogPackPath)
+                );
+            } catch (IOException e) {}
+        }
     }
 
     public static void applyFogpack(Fogpack fogpack) {
@@ -74,9 +87,11 @@ public class FogpackManager {
 
         FoggerClient.getConfig().setAppliedFogpack(fogpack);
 
-        if (!ignoreReload) {
+        if (!ignoreReload && FoggerConfig.Config.getLatestWaterColor() != fogpack.getConfig().getWater().getColor()) {
             MinecraftClient.getInstance().reloadResources();
         }
+
+        FoggerClient.getConfig().setLatestWaterColor(fogpack.getConfig().getWater().getColor());
     }
 
     @Nullable

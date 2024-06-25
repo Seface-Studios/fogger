@@ -23,41 +23,43 @@ package net.sefacestudios.mixin;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.minecraft.world.biome.BiomeEffects;
+import net.minecraft.world.biome.BiomeKeys;
+import net.minecraft.world.biome.source.BiomeSource;
 import net.sefacestudios.fogpack.Fogpack;
 import net.sefacestudios.fogpack.FogpackManager;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Environment(EnvType.CLIENT)
 @Mixin(BiomeEffects.class)
 public abstract class BiomeEffectsMixin {
-    @Unique
-    private static final String VANILLA_FOGPACK = "fogger:vanilla";
+
 
     @ModifyReturnValue(method = "getSkyColor", at = @At("RETURN"))
     private int getSkyColor(int original) {
-        return !isVanillaFogpack() ? FogpackManager.getAppliedFogpack().getConfig().getSky().getColor() : original;
+        return FogpackManager.getAppliedFogpack().getConfig().getSky().getColor(original);
     }
 
     @ModifyReturnValue(method = "getFogColor", at = @At("RETURN"))
     private int getFogColor(int original) {
-        return !isVanillaFogpack()  ? FogpackManager.getAppliedFogpack().getConfig().getFog().getColor() : original;
+        return FogpackManager.getAppliedFogpack().getConfig().getFog().getColor(original);
     }
 
     @ModifyReturnValue(method = "getWaterColor", at = @At("RETURN"))
     private int getWaterColor(int original) {
-        return !isVanillaFogpack()  ? FogpackManager.getAppliedFogpack().getConfig().getWater().getColor() : original;
+        return FogpackManager.getAppliedFogpack().getConfig().getWater().getColor(original);
     }
 
     @ModifyReturnValue(method = "getWaterFogColor", at = @At("RETURN"))
     private int getWaterFogColor(int original) {
-        return !isVanillaFogpack()  ? FogpackManager.getAppliedFogpack().getConfig().getWaterFog().getColor() : original;
+        return FogpackManager.getAppliedFogpack().getConfig().getWaterFog().getColor(original);
     }
 
     private static boolean isVanillaFogpack() {
         Fogpack fogpack = FogpackManager.getAppliedFogpack();
-        return fogpack == null || fogpack.getIdentifier().equals(VANILLA_FOGPACK);
+        return fogpack == null || fogpack.getIdentifier().equals(FogpackManager.VANILLA_FOGPACK);
     }
 }

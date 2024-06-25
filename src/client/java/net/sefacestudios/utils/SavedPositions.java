@@ -12,10 +12,7 @@ public class SavedPositions {
     private double y;
     private double z;
 
-    @SerializedName("fogpack_identifier")
-    private String identifier;
-
-    private Fogpack fogpack;
+    private String fogpack;
 
     public SavedPositions(String name, Vec3d position, Fogpack fogpack) {
         this.x = position.getX();
@@ -23,7 +20,6 @@ public class SavedPositions {
         this.z = position.getZ();
 
         this.name = name;
-        this.identifier = fogpack != null ? fogpack.getIdentifier() : null;
-        this.fogpack = fogpack != null ? fogpack : null;
+        this.fogpack = fogpack != null ? fogpack.getIdentifier() : null;
     }
 }

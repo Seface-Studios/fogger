@@ -25,8 +25,6 @@ import net.sefacestudios.config.FoggerConfig;
 
 public class ClientStartEvent {
     public static void event() {
-       //ClientTickEvents.START_WORLD_TICK.register(world -> FoggerConfig.loadFromConfig(MinecraftClient.getInstance()));
-
        ClientLifecycleEvents.CLIENT_STARTED.register(client -> { FoggerConfig.initialize(); });
     }
 }

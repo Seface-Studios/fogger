@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {
+    "GenericConfiguration": {
+      "type": "object",
+      "properties": {
+        "color": {
+          "type": "string",
+          "pattern": "^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$",
+          "description": "Hexadecimal value of the color to be applied.",
+          "default": "#FF00FF"
+        }
+      },
+
+      "required": ["color"]
+    },
+
+    "FogConfiguration": {
+      "allOf": [
+        { "$ref": "#/definitions/GenericConfiguration" },
+        {
+          "type": "object",
+          "properties": {
+            "distance": {
+              "type": "integer",
+              "description": "The distance (in chunks) the fog will be in relation to the player. This option has the same Render Distance logic, the difference is that it will only be applicable to fog.",
+              "default": 16,
+              "minimum": 2,
+              "maximum": 32
+            }
+          }
+        }
+      ]
+    }
+  },
+
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "The Fogpack version."
+    },
+
+    "name": {
+      "type": "string",
+      "description": "The Fogpack name."
+    },
+
+    "identifier": {
+      "type": "string",
+      "description": "The Fogpack identifier. This identifier must be unique and in the format 'namespace:identifier'.",
+      "default": "namespace:identifier",
+      "pattern": "^(?:(?:(?!minecraft|minecon|fogger))+[a-z]*:[a-z_]*)+$"
+    },
+
+    "description": {
+      "type": "string",
+      "description": "The Fogpack description."
+    },
+
+    "authors": {
+      "type": "array",
+      "description": "Everyone involved in setting up this Fogpack.",
+      "items": [
+        { "type": "string" }
+      ]
+    },
+
+    "config": {
+      "type": "object",
+      "description": "All the Fogpack configuration.",
+      "properties": {
+        "sky": {
+          "$ref": "#/definitions/GenericConfiguration",
+          "description": "Sky configuration."
+        },
+
+        "fog": {
+          "$ref": "#/definitions/FogConfiguration",
+          "description": "Fog configuration."
+        },
+
+        "water": {
+          "$ref": "#/definitions/GenericConfiguration",
+          "description": "Water configuration."
+        },
+
+        "water_fog": {
+          "$ref": "#/definitions/GenericConfiguration",
+          "description": "Water fog configuration."
+        }
+      }
+    }
+  },
+
+  "required": ["version", "name", "identifier", "description", "authors", "config"]
+}
