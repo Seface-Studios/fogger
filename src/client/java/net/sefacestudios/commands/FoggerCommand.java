@@ -26,9 +26,7 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.IdentifierArgumentType;
-import net.sefacestudios.commands.subcommands.FoggerGenerateSubcommand;
-import net.sefacestudios.commands.subcommands.FoggerReloadSubcommand;
-import net.sefacestudios.commands.subcommands.FoggerUseSubcommand;
+import net.sefacestudios.commands.subcommands.*;
 import net.sefacestudios.fogpack.FogpackManager;
 import net.sefacestudios.fogpack.FogpackProviders;
 import org.jetbrains.annotations.Nullable;
@@ -53,6 +51,10 @@ public class FoggerCommand {
                             )
                     )
 
+                    .then(ClientCommandManager.literal("info")
+                            .executes(FoggerInfoSubcommand::execute)
+                    )
+
                     // RELOAD SUBCOMMAND
                     .then(ClientCommandManager.literal("reload")
                             .executes(FoggerReloadSubcommand::execute)
@@ -60,79 +62,8 @@ public class FoggerCommand {
 
                     // RESET SUBCOMMAND
                     .then(ClientCommandManager.literal("reset")
-                            .executes(context -> {
-                                FogpackManager.applyFogpack(FogpackManager.VANILLA_FOGPACK);
-                                return 1;
-                            })
+                            .executes(FoggerResetSubcommand::execute)
                     )
-
-            // Set sky color
-            /*.then(ClientCommandManager.literal("sky")
-            .executes(
-                context -> {
-                    FoggerConfig.saveToConfig();
-                    return 1;
-                }
-            ))
-
-            .then(ClientCommandManager.argument("value", StringArgumentType.string())
-            .executes(context -> {
-                String value = context.getArgument("value", String.class);
-                FoggerConfig.skyConfigData.color = Integer.parseInt(value, 16);
-                FoggerConfig.saveToConfig();
-                return 1;
-            }))
-
-            // Set fog color
-            .then(ClientCommandManager.literal("fog")
-            .executes(
-                context -> {
-                    FoggerConfig.saveToConfig();
-                    return 1;
-                }
-            )
-
-            .then(ClientCommandManager.argument("value", StringArgumentType.string())
-            .executes(context -> {
-                String value = context.getArgument("value", String.class);
-                FoggerConfig.fogConfigData.color = Integer.parseInt(value, 16);
-                FoggerConfig.saveToConfig();
-                return 1;
-            }))
-
-            // Set water color
-            .then(ClientCommandManager.literal("water")
-            .executes(
-                context -> {
-                    FoggerConfig.saveToConfig();
-                    return 1;
-                }
-            ))
-
-            .then(ClientCommandManager.argument("value", StringArgumentType.string())
-            .executes(context -> {
-                String value = context.getArgument("value", String.class);
-                FoggerConfig.waterConfigData.color = Integer.parseInt(value, 16);
-                FoggerConfig.saveToConfig();
-                context.getSource().getClient().reloadResources();
-                return 1;
-            })))
-
-            // Set water fog color
-            .then(ClientCommandManager.literal("waterFog")
-            .executes(
-                context -> {
-                    FoggerConfig.saveToConfig();
-                    return 1;
-                }
-            ))
-            .then(ClientCommandManager.argument("value", StringArgumentType.string())
-            .executes(context -> {
-                String value = context.getArgument("value", String.class);
-                FoggerConfig.waterFogConfigData.color = Integer.parseInt(value, 16);
-                FoggerConfig.saveToConfig();
-                return 1;
-            }))*/
         );
     }
 }

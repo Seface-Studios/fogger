@@ -8,6 +8,7 @@ import net.sefacestudios.Fogger;
 import net.sefacestudios.FoggerClient;
 import net.sefacestudios.config.FoggerConfig;
 import net.sefacestudios.utils.FoggerUtils;
+import net.sefacestudios.utils.FogpacksSource;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -17,10 +18,11 @@ import java.util.Collection;
 
 public class FogpackManager {
     public static final String VANILLA_FOGPACK = "minecraft:vanilla";
-    private static final String FOG_PACK_SUFFIX = ".fogpack.json";
+    private static final String FOGPACK_SUFFIX = ".fogpack.json";
     
     @Getter private static Fogpack appliedFogpack = null;
-    @Getter private static Collection<Fogpack> loadedFogpacks;
+
+    @Getter private static Collection<Fogpack> loadedFogpacks = new ArrayList<>();
 
     public FogpackManager() {}
 
@@ -33,34 +35,52 @@ public class FogpackManager {
         File builtInFogpacksFolder = new File(resourcesURI);
 
         this
-          .loadOrReloadFogpacksFrom(gameDirFogpacksFolder)
-          .loadOrReloadFogpacksFrom(builtInFogpacksFolder);
+           .loadOrReloadFogpacksFrom(builtInFogpacksFolder, FogpacksSource.RESOURCES)
+           .loadOrReloadFogpacksFrom(gameDirFogpacksFolder, FogpacksSource.GAME_DIRECTORY);
     }
 
-    public FogpackManager loadOrReloadFogpacksFrom(File directory) {
+    public FogpackManager loadOrReloadFogpacksFrom(File directory, FogpacksSource source) {
         if (!directory.isDirectory()) {
             Fogger.LOGGER.warn("The path " + directory + " is not a directory!");
             return this;
         }
 
-        File[] fogpacks = directory.listFiles((dir, name) -> name.endsWith(FogpackManager.FOG_PACK_SUFFIX));
+        File[] fogpacks = directory.listFiles((dir, name) -> name.endsWith(FogpackManager.FOGPACK_SUFFIX));
 
         if (fogpacks == null) {
             Fogger.LOGGER.warn("No fogpacks were found in the directory: " + directory);
             return this;
         }
 
-        for (File fogpack : fogpacks) {
-            loadedFogpacks.add(
-                    FoggerUtils.getData(Fogpack.class, fogpack.toPath())
-            );
+        for (File fogpackFile : fogpacks) {
+            Fogpack fogpack = FoggerUtils.getData(Fogpack.class, fogpackFile.toPath());
+            fogpack.setPath(fogpackFile.getPath());
+
+            if (isFogpackLoaded(fogpack.getIdentifier())) {
+                Fogger.LOGGER.warn("A Fogpack with the identifier \""+ fogpack.getIdentifier() +"\" has already been loaded. Ignoring...");
+                continue;
+            }
+
+            loadedFogpacks.add(fogpack);
         }
 
         return this;
     }
 
+    /**
+     * Checks a Fogpack with specific identifier are loaded.
+     * @param identifier The Fogpack identifier.
+     * @return true if some Fogpack with parsed identifier are loaded.
+     */
+    public static boolean isFogpackLoaded(String identifier) {
+        for (Fogpack loadedFogpack : loadedFogpacks) {
+            if (loadedFogpack.getIdentifier().equals(identifier)) {
+                return true;
+            }
+        }
 
-
+        return false;
+    }
 
     public static void applyFogpack(Fogpack fogpack) {
         applyFogpack(fogpack, false);
@@ -75,15 +95,22 @@ public class FogpackManager {
     }
 
     public static void applyFogpack(Fogpack fogpack, boolean ignoreReload) {
-        appliedFogpack = fogpack;
+        Fogpack fp = fogpack;
 
-        FoggerClient.getConfig().setAppliedFogpack(fogpack);
-
-        if (!ignoreReload && FoggerConfig.Config.getLatestWaterColor() != fogpack.getConfig().getWater().getColor()) {
-            MinecraftClient.getInstance().reloadResources();
+        if (fogpack == null) {
+            fp = FogpackManager.getFogpackFromIdentifier(VANILLA_FOGPACK);
+            Fogger.LOGGER.warn("The attempt to apply a Fogpack failed. Applying the \"" + VANILLA_FOGPACK + "\" instead.");
         }
 
-        FoggerClient.getConfig().setLatestWaterColor(fogpack.getConfig().getWater().getColor());
+        appliedFogpack = fp;
+
+        FoggerClient.getConfig().setAppliedFogpack(fp);
+
+        /*if (!ignoreReload && (FoggerConfig.Config.getLatestWaterColor() != fp.getConfig().getWater().getColor())) {
+            MinecraftClient.getInstance().reloadResources();
+        }*/
+
+        FoggerClient.getConfig().setLatestWaterColor(fp.getConfig().getWater().getColor());
     }
 
     @Nullable

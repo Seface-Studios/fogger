@@ -1,9 +1,9 @@
 {
-  "$schema": "../../../../../../fogpack.schema.v1.json",
+  "$schema": "https://www.sefacestudios.net/fogpack.schema.v1.json",
   "version": "1.0.0",
   "name": "Swamp Lands",
   "identifier": "seface:swamp_lands",
-  "description": "",
+  "description": "What are you doing in my swamp?! (built-in)",
   "authors": ["Seface Studios"],
 
   "config": {

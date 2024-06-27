@@ -3,56 +3,76 @@ package net.sefacestudios.fogpack;
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 
 import java.awt.*;
-import java.util.Random;
 
-@Getter
 @Setter
+@Getter
 public class FogpackConfiguration {
     private ColorConfiguration sky = new ColorConfiguration();
-    private FogConfiguration fog = new FogConfiguration(-1, 0);
+    private FogConfiguration fog = new FogConfiguration(-1, 20);
+    private ColorConfiguration clouds = new ColorConfiguration();
     private ColorConfiguration water = new ColorConfiguration();
 
     @SerializedName("water_fog")
-    private ColorConfiguration waterFog = new ColorConfiguration();
+    private ColorConfiguration waterFog = new ColorConfiguration(null);
+
+    public FogpackConfiguration() {}
 
     public static class ColorConfiguration {
         private final String color;
 
-        protected ColorConfiguration() {
-            this.color = randomColor();
+        public ColorConfiguration() {
+            this(null);
         }
 
-        public int getColor() {
-            return this.color != null ? Color.decode(this.color).getRGB() : 0;
+        public ColorConfiguration(String color) {
+            this.color = color;
         }
 
-        public int getColor(int original) {
+        public String getHex() {
+            return this.color != null ? this.color : "";
+        }
+
+        public Integer getColor() {
+            return this.color != null ? Color.decode(this.color).getRGB() : null;
+        }
+
+        public Integer getColor(int original) {
             return this.color != null ? Color.decode(this.color).getRGB() : original;
-        }
-
-        public static String randomColor() {
-            Random random = new Random();
-            int r = random.nextInt(256);
-            int g = random.nextInt(256);
-            int b = random.nextInt(256);
-
-            return String.format("#%02x%02x%02x", r, g, b);
         }
     }
 
-    @Getter
+    @Setter
     public static class FogConfiguration extends ColorConfiguration {
-        private final int distance;
+        private Integer distance;
 
         @SerializedName("start_multiplier")
-        private final int startMultiplier;
+        private Integer startMultiplier;
 
-        protected FogConfiguration(int distance, int start_multiplier) {
-            super();
+        private static transient int MIN_START_MULTIPLIER = 20;
+        private static transient int MAX_START_MULTIPLIER = 100;
+
+        public FogConfiguration(int distance, int startMultiplier) {
+            this(distance, startMultiplier, null);
+        }
+
+        public FogConfiguration(int distance, int startMultiplier, String color) {
+            super(color);
             this.distance = distance;
-            this.startMultiplier = start_multiplier;
+            this.startMultiplier = startMultiplier;
+        }
+
+        public Integer getDistance() {
+            return this.distance != null && this.distance <= 0 && this.distance != -1 ? this.distance : -1;
+        }
+
+        public Integer getStartMultiplier() {
+            return Math.max(
+                    MIN_START_MULTIPLIER,
+                    Math.min(MAX_START_MULTIPLIER, this.startMultiplier == null ? MIN_START_MULTIPLIER : this.startMultiplier)
+            );
         }
     }
 }

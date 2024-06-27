@@ -10,19 +10,15 @@ import net.sefacestudios.config.FoggerConfig;
 import net.sefacestudios.fogpack.Fogpack;
 import net.sefacestudios.fogpack.FogpackManager;
 
-import java.util.Set;
-
-public class FoggerReloadSubcommand {
+public class FoggerResetSubcommand {
     public static int execute(CommandContext<FabricClientCommandSource> ctx) {
         ClientPlayerEntity player = ctx.getSource().getPlayer();
 
-        Fogpack fogpack = FogpackManager.getFogpackFromIdentifier(FoggerConfig.Config.getAppliedFogpackInstance().getIdentifier());
-        FoggerClient.getFogpackManager().loadOrReloadFogpacks();
-        FogpackManager.applyFogpack(fogpack);
+        FogpackManager.applyFogpack(FogpackManager.VANILLA_FOGPACK);
 
         player.sendMessage(
                 Fogger.MESSAGES_PREFIX.copy().append(
-                        Text.translatable("commands.fogger.reload.success")
+                        Text.translatable("commands.fogger.reset.success")
                 )
         );
 

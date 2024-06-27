@@ -1,9 +1,9 @@
 {
-  "$schema": "../../../../../../fogpack.schema.v1.json",
+  "$schema": "https://www.sefacestudios.net/fogpack.schema.v1.json",
   "version": "1.0.0",
   "name": "Elden Ring",
   "identifier": "seface:elden_ring",
-  "description": "I am the warrior jar known as Alexander. Iron Fist Alexander, in fact.",
+  "description": "I am the warrior jar known as Alexander. Iron Fist Alexander, in fact. (built-in)",
   "authors": ["Seface Studios"],
 
   "config": {

@@ -31,7 +31,6 @@ public abstract class BackgroundRendererMixin {
         if (fogpack.getIdentifier().equals(FogpackManager.VANILLA_FOGPACK)) return;
 
         int fogDistance = fogpack.getConfig().getFog().getDistance();
-
         if (fogDistance < 1) return;
 
         Entity entity = camera.getFocusedEntity();
@@ -45,12 +44,8 @@ public abstract class BackgroundRendererMixin {
         }
 
         if (camera.getSubmersionType() == CameraSubmersionType.NONE && (thickFog || fogType == BackgroundRenderer.FogType.FOG_TERRAIN)) {
-            if (fogDistance == 33) {
-                RenderSystem.setShaderFogColor(1f, 1f, 1f, 0f);
-            } else {
-                RenderSystem.setShaderFogStart(fogDistance * 16 * fogStartMultiplier);
-                RenderSystem.setShaderFogEnd((fogDistance + 1) * 16);
-            }
+           RenderSystem.setShaderFogStart(fogDistance * 16 * fogStartMultiplier);
+           RenderSystem.setShaderFogEnd((fogDistance + 1) * 16);
         }
     }
 }

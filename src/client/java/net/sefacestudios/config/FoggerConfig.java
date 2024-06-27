@@ -23,7 +23,6 @@ package net.sefacestudios.config;
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import net.fabricmc.loader.api.FabricLoader;
-import net.sefacestudios.Fogger;
 import net.sefacestudios.fogpack.Fogpack;
 import net.sefacestudios.fogpack.FogpackManager;
 import net.sefacestudios.utils.FoggerUtils;
@@ -37,29 +36,30 @@ public class FoggerConfig {
     public static final Path FOGPACK_CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("fogger.json");
 
     public static class Config {
+        @Getter
         @SerializedName("applied_fogpack")
         private String appliedFogpack = FogpackManager.VANILLA_FOGPACK;
 
         @SerializedName("latest_water_color")
         private int latestWaterColor = 0;
 
-        private static transient final Config data = FoggerUtils.getData(FoggerConfig.Config.class, FOGPACK_CONFIG_PATH);
-
         @Getter
         @SerializedName("saved_positions")
         private ArrayList<SavedPositions> savedPositions = new ArrayList<>();
+
+        private static transient final Config data = FoggerUtils.getData(FoggerConfig.Config.class, FOGPACK_CONFIG_PATH);
 
         public void setAppliedFogpack(Fogpack fogpack) {
             this.appliedFogpack = fogpack.getIdentifier();
             FoggerUtils.createOrUpdate(FoggerConfig.Config.class, FOGPACK_CONFIG_PATH, this, true);
         }
 
-        public void setLatestWaterColor(int color) {
-            this.latestWaterColor = color;
+        public void setLatestWaterColor(Integer color) {
+            this.latestWaterColor = color != null ? color : 0;
             FoggerUtils.createOrUpdate(FoggerConfig.Config.class, FOGPACK_CONFIG_PATH, this, true);
         }
 
-        public static Fogpack getAppliedFogpack() {
+        public static Fogpack getAppliedFogpackInstance() {
             return FogpackManager.getFogpackFromIdentifier(data.appliedFogpack);
         }
 
@@ -68,6 +68,12 @@ public class FoggerConfig {
 
     public static void initialize() {
         FoggerUtils.createOrUpdate(FoggerConfig.Config.class, FOGPACK_CONFIG_PATH);
-        FogpackManager.applyFogpack(FoggerConfig.Config.getAppliedFogpack(), true);
+
+        /*if (!FogpackManager.isFogpackLoaded(FoggerClient.getConfig().getAppliedFogpack())) {
+            Fogger.LOGGER.warn("INVALID");
+            return;
+        }*/
+
+        FogpackManager.applyFogpack(FoggerConfig.Config.getAppliedFogpackInstance(), true);
     }
 }

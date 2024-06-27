@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.Getter;
 import net.fabricmc.api.ClientModInitializer;
+import net.minecraft.client.util.ScreenshotRecorder;
 import net.sefacestudios.config.FoggerConfig;
 import net.sefacestudios.fogpack.FogpackManager;
 import net.sefacestudios.registry.FoggerCommands;
@@ -38,7 +39,6 @@ public class FoggerClient implements ClientModInitializer {
     public static final Gson GSON = new GsonBuilder()
             .setPrettyPrinting()
             .excludeFieldsWithModifiers(Modifier.TRANSIENT)
-            .serializeNulls()
             .create();
 
     @Getter
@@ -49,10 +49,11 @@ public class FoggerClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        getFogpackManager().loadOrReloadFogpacks();
+
         FoggerKeybinds.register();
         FoggerCommands.register();
 
-        getFogpackManager().loadOrReloadFogpacks();
         ClientStartEvent.event();
     }
 }

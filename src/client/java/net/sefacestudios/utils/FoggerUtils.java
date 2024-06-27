@@ -5,10 +5,7 @@ import net.sefacestudios.Fogger;
 import net.sefacestudios.FoggerClient;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -51,6 +48,10 @@ public class FoggerUtils {
     @SneakyThrows
     public static <T> void createOrUpdate(Class<T> clazz, Path path, @Nullable T clazzThis, boolean update) {
         if (Files.exists(path) && !update) return;
+
+        if (!path.getParent().toFile().exists()) {
+            path.getParent().toFile().mkdirs();
+        }
 
         T instance = update && clazzThis != null ? clazzThis : clazz.getConstructor().newInstance();
 

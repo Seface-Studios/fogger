@@ -3,7 +3,11 @@ package net.sefacestudios.commands.subcommands;
 import com.mojang.brigadier.context.CommandContext;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.entity.ai.goal.FollowParentGoal;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.HoverEvent;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.sefacestudios.Fogger;
 import net.sefacestudios.FoggerClient;
@@ -14,6 +18,8 @@ import net.sefacestudios.utils.SefaceStudiosMembers;
 
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.Random;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 public class FoggerGenerateSubcommand {
@@ -29,7 +35,11 @@ public class FoggerGenerateSubcommand {
         boolean canUseSefaceNamespace = (!Pattern.matches(IDENTIFIER_SEFACE_REGEX_PATTERN, identifier.toString()) && !SefaceStudiosMembers.isSefaceMember(player.getUuid()));
 
         if (canUseSefaceNamespace || !Pattern.matches(IDENTIFIER_REGEX_PATTERN, identifier.toString())) {
-            player.sendMessage(Text.translatable("fogger.message.notAllowedNamespace", identifier.getNamespace()));
+            player.sendMessage(
+                    Fogger.MESSAGES_PREFIX.copy().append(
+                            Text.translatable("commands.fogger.generate.failed.notAllowedNamespace", identifier.getNamespace())
+                    )
+            );
             return 1;
         }
 
@@ -37,18 +47,39 @@ public class FoggerGenerateSubcommand {
 
         for (Fogpack fogpack : fogpacks) {
             if (fogpack.getIdentifier().equals(identifier.toString())) {
-                player.sendMessage(Text.translatable("fogger.message.fogpackAlreadyExists", fogpack.getIdentifier()));
+                player.sendMessage(
+                        Fogger.MESSAGES_PREFIX.copy().append(
+                                Text.translatable("commands.fogger.generate.failed.fogpackAlreadyExist", fogpack.getIdentifier())
+                        )
+
+                );
                 return 1;
             }
         }
 
-        Fogpack fogpack = new Fogpack(identifier, name);
-        Path path = Fogger.FOGPACKS_FOLDER_PATH.resolve(identifier.getPath().concat(".fogpack.json"));
+        Random random = new Random();
+        Fogpack fogpack = new Fogpack(identifier, name).withRandomColors();
+        String fileName = identifier.getPath()
+                .concat("-")
+                .concat(String.valueOf(random.nextInt(100000)))
+                .concat(".fogpack.json");
+
+        Path path = Fogger.FOGPACKS_FOLDER_PATH.resolve(fileName);
 
         FoggerUtils.createOrUpdate(Fogpack.class, path, fogpack, true);
         FoggerClient.getFogpackManager().loadOrReloadFogpacks();
 
-        player.sendMessage(Text.translatable("fogger.message.baseFogpackFileGenerated", identifier.getPath()));
+        Text text = Text.literal(fileName).formatted(Formatting.UNDERLINE).styled((style) -> {
+            return style
+                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable("commands.fogger.generate.success.fogpackFileGenerated.hover")))
+                    .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, Fogger.FOGPACKS_FOLDER_PATH.toString()));
+        });
+
+        player.sendMessage(
+                Fogger.MESSAGES_PREFIX.copy().append(
+                        Text.translatable("commands.fogger.generate.success.fogpackFileGenerated", text)
+                )
+        );
 
         return 1;
     }

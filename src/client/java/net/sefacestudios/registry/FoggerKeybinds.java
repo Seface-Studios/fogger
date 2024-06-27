@@ -11,6 +11,9 @@ import net.minecraft.client.util.InputUtil;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.biome.Biome;
@@ -36,8 +39,5 @@ public class FoggerKeybinds {
         ClientTickEvents.END_CLIENT_TICK.register(FoggerKeybinds::openFogPacksLogic);
     }
 
-    private static void openFogPacksLogic(MinecraftClient client) {
-        while (FoggerKeybinds.openFogPacksList.wasPressed()) {
-        }
-    }
+    private static void openFogPacksLogic(MinecraftClient client) {}
 }

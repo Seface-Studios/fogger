@@ -3,10 +3,24 @@
   "fogger.key.openFogPacks": "Open Fogpacks",
   "fogger.fogpacks.openFolder": "Open Fogpacks Folder",
 
-  "fogger.message.invalidFogPackName": "The Fogpack \"%s\" cannot be loaded or does not exist. If you have imported them, you need to reload with /fogger reload",
+  // FOGGER USE <IDENTIFIER>
+  "commands.fogger.use.failed.fogpackDoesNotExist": "The Fogpack \"%s\" cannot be loaded or does not exist. If you have imported them, you need to reload with /fogger reload",
+  "commands.fogger.use.success": "The Fogpack \"%s\" was applied.",
 
-  "fogger.message.fogpackAlreadyExists": "A Fogpack with the identifier \"%s\" already exists. Please, try another one.",
-  "fogger.message.notAllowedNamespace": "The namespace \"%s\" is not free-use. Please, try another one.",
-  "fogger.message.baseFogpackFileGenerated": "%s.fogpack.json was generated at your fogpacks folder."
+  // FOGGER GENERATE <IDENTIFIER> <NAME>
+  "commands.fogger.generate.failed.fogpackAlreadyExist": "A Fogpack with the identifier \"%s\" already exists. Please, try another one.",
+  "commands.fogger.generate.failed.notAllowedNamespace": "The namespace \"%s\" is not free-use. Please, try another one.",
+  "commands.fogger.generate.success.fogpackFileGenerated": "%s was generated at your Fogpacks folder.",
+  "commands.fogger.generate.success.fogpackFileGenerated.hover": "Click here to open Fogpacks folder.",
 
+  // FOGGER RESET
+  "commands.fogger.reset.success": "Using vanilla Fogpack.",
+
+  // FOGGER RELOAD
+  "commands.fogger.reload.success": "All Fogpacks have been reloaded.",
+
+  // FOGGER INFO
+  "commands.fogger.info.title": "%s • %s",
+  "commands.fogger.info.generic": " • %s: %s",
+  "commands.fogger.info.fog": " • Fog: %s [D: %s | SM: %s]"
 }

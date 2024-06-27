@@ -1,0 +1,11 @@
+{
+  "providers": [
+    {
+		"type": "bitmap",
+		"ascent": 7,
+		"height": 8,
+		"file": "icons/warning.png",
+		"chars": ["\uE100"]
+	}
+  ]
+}
