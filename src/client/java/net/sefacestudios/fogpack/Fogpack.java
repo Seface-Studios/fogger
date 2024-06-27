@@ -22,7 +22,7 @@ public class Fogpack {
     @Getter
     private transient String path;
 
-    private transient Random random = new Random();
+    private final transient Random random = new Random();
 
     private final FogpackConfiguration config = new FogpackConfiguration();
 

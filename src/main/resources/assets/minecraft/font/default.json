@@ -4,7 +4,7 @@
 		"type": "bitmap",
 		"ascent": 7,
 		"height": 8,
-		"file": "icons/warning.png",
+		"file": "icons/fogger_icon.png",
 		"chars": ["\uE100"]
 	}
   ]
