@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "name": "Blue World",
   "identifier": "seface:blue_world",
-  "description": "You listen up; Here's a story; About a little guy; That lives in a blue world... (built-in)",
+  "description": "You listen up; Here's a story; About a little guy; That lives in a blue world...",
   "authors": ["Seface Studios"],
 
   "config": {

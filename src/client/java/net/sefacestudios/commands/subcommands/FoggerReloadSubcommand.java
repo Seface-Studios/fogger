@@ -6,26 +6,23 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.text.Text;
 import net.sefacestudios.Fogger;
 import net.sefacestudios.FoggerClient;
-import net.sefacestudios.config.FoggerConfig;
 import net.sefacestudios.fogpack.Fogpack;
-import net.sefacestudios.fogpack.FogpackManager;
 
-import java.util.Set;
 
 public class FoggerReloadSubcommand {
-    public static int execute(CommandContext<FabricClientCommandSource> ctx) {
-        ClientPlayerEntity player = ctx.getSource().getPlayer();
+  public static int execute(CommandContext<FabricClientCommandSource> ctx) {
+    ClientPlayerEntity player = ctx.getSource().getPlayer();
 
-        Fogpack fogpack = FogpackManager.getFogpackFromIdentifier(FoggerConfig.Config.getAppliedFogpackInstance().getIdentifier());
-        FoggerClient.getFogpackManager().loadOrReloadFogpacks();
-        FogpackManager.applyFogpack(fogpack);
+    Fogpack fogpack = FoggerClient.getFogpackManager().getFogpackFromIdentifier(FoggerClient.getFogpackManager().getAppliedFogpackInstance().getIdentifier());
+    FoggerClient.getFogpackManager().loadOrReloadFogpacks();
+    FoggerClient.getFogpackManager().applyFogpack(fogpack);
 
-        player.sendMessage(
-                Fogger.MESSAGES_PREFIX.copy().append(
-                        Text.translatable("commands.fogger.reload.success")
-                )
-        );
+    player.sendMessage(
+      Fogger.MESSAGES_PREFIX.copy().append(
+        Text.translatable("commands.fogger.reload.success")
+      )
+    );
 
-        return 1;
-    }
+    return 1;
+  }
 }

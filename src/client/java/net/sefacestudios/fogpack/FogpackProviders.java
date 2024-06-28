@@ -5,15 +5,16 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.sefacestudios.FoggerClient;
 
 import java.util.concurrent.CompletableFuture;
 
 public class FogpackProviders {
-    public static CompletableFuture<Suggestions> getUseSuggestions(CommandContext<FabricClientCommandSource> ctx, SuggestionsBuilder bld) throws CommandSyntaxException {
-        for (Fogpack fogPack : FogpackManager.getLoadedFogpacks()) {
-            bld.suggest(String.valueOf(fogPack.getIdentifier()));
-        }
-
-        return bld.buildFuture();
+  public static CompletableFuture<Suggestions> getUseSuggestions(CommandContext<FabricClientCommandSource> ctx, SuggestionsBuilder bld) throws CommandSyntaxException {
+    for (Fogpack fogPack : FoggerClient.getFogpackManager().getLoadedFogpacks()) {
+      bld.suggest(String.valueOf(fogPack.getIdentifier()));
     }
+
+    return bld.buildFuture();
+  }
 }

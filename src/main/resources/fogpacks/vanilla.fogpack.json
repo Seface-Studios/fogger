@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "name": "Default",
   "identifier": "minecraft:vanilla",
-  "description": "The default look and feel of Minecraft Fog. (built-in)",
+  "description": "The default look and feel of Minecraft Fog.",
   "authors": ["Mojang Studios"],
 
   "config": {}

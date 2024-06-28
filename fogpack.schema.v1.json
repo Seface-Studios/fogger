@@ -35,8 +35,8 @@
                 {
                   "type": "integer",
                   "description": "The distance (in chunks) the fog will be in relation to the player.",
-                  "default": 1,
-                  "minimum": 1,
+                  "default": 16,
+                  "minimum": 0,
                   "maximum": 32
                 },
                 {
@@ -52,9 +52,9 @@
 
             "start_multiplier": {
               "type": "integer",
-              "description": "The multipler (20-100) for the start distance in relation to the player.",
+              "description": "The multipler (0-100) for the start distance in relation to the player.",
               "default": 20,
-              "minimum": 20,
+              "minimum": 0,
               "maximum": 100
             }
           }

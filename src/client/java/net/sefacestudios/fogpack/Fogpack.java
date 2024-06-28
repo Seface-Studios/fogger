@@ -11,42 +11,43 @@ import java.util.Random;
 
 @Getter
 public class Fogpack {
-    private String $schema = "https://www.sefacestudios.net/fogpack.schema.v1.json";
-    private String version = "1.0.0";
-    private String identifier;
-    private String name;
-    private String description = "";
-    private List<String> authors = new ArrayList<>(List.of(MinecraftClient.getInstance().player.getName().getString()));
+  private String $schema = "https://www.sefacestudios.net/fogpack.schema.v1.json";
+  private String version = "1.0.0";
+  private String identifier;
+  private String name;
 
-    @Setter
-    @Getter
-    private transient String path;
+  @Setter
+  private String description = "";
+  private List<String> authors = new ArrayList<>(List.of(MinecraftClient.getInstance().player.getName().getString()));
 
-    private final transient Random random = new Random();
+  @Setter
+  private transient String path;
 
-    private final FogpackConfiguration config = new FogpackConfiguration();
+  private final transient Random random = new Random();
 
-    public Fogpack(Identifier identifier, String name) {
-        this.identifier = identifier.toString();
-        this.name = name;
-    }
+  private final FogpackConfiguration config = new FogpackConfiguration();
 
-    public Fogpack withRandomColors() {
-        this.config.setSky(new FogpackConfiguration.ColorConfiguration(randomColor()));
-        this.config.setFog(new FogpackConfiguration.FogConfiguration(-1, 20, randomColor()));
-        this.config.setClouds(new FogpackConfiguration.ColorConfiguration(randomColor()));
-        this.config.setWater(new FogpackConfiguration.ColorConfiguration(randomColor()));
-        this.config.setWaterFog(new FogpackConfiguration.ColorConfiguration(randomColor()));
+  public Fogpack(Identifier identifier, String name) {
+    this.identifier = identifier.toString();
+    this.name = name;
+  }
 
-        return this;
-    }
+  public Fogpack withRandomColors() {
+    this.config.setSky(new FogpackConfiguration.ColorConfiguration(randomColor()));
+    this.config.setFog(new FogpackConfiguration.FogConfiguration(-1, 20, randomColor()));
+    this.config.setClouds(new FogpackConfiguration.ColorConfiguration(randomColor()));
+    this.config.setWater(new FogpackConfiguration.ColorConfiguration(randomColor()));
+    this.config.setWaterFog(new FogpackConfiguration.ColorConfiguration(randomColor()));
 
-    public static String randomColor() {
-        Random random = new Random();
-        int r = random.nextInt(256);
-        int g = random.nextInt(256);
-        int b = random.nextInt(256);
+    return this;
+  }
 
-        return String.format("#%02x%02x%02x", r, g, b).toUpperCase();
-    }
+  public static String randomColor() {
+    Random random = new Random();
+    int r = random.nextInt(256);
+    int g = random.nextInt(256);
+    int b = random.nextInt(256);
+
+    return String.format("#%02x%02x%02x", r, g, b).toUpperCase();
+  }
 }

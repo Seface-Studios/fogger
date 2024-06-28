@@ -5,6 +5,8 @@ import net.minecraft.client.render.BackgroundRenderer;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.CameraSubmersionType;
 import net.minecraft.entity.Entity;
+import net.sefacestudios.Fogger;
+import net.sefacestudios.FoggerClient;
 import net.sefacestudios.fogpack.Fogpack;
 import net.sefacestudios.fogpack.FogpackManager;
 import org.jetbrains.annotations.Nullable;
@@ -14,38 +16,40 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-
 @Mixin(BackgroundRenderer.class)
 public abstract class BackgroundRendererMixin {
 
-    @Shadow
-    @Nullable
-    private static BackgroundRenderer.@Nullable StatusEffectFogModifier getFogModifier(Entity entity, float tickDelta) {
-        return null;
+  @Shadow
+  @Nullable
+  private static BackgroundRenderer.@Nullable StatusEffectFogModifier getFogModifier(Entity entity, float tickDelta) {
+    return null;
+  }
+
+  @Inject(method = "applyFog", at = @At(value = "TAIL"))
+  private static void applyFog(Camera camera, BackgroundRenderer.FogType fogType, float viewDistance, boolean thickFog, float tickDelta, CallbackInfo ci) {
+    Fogpack fogpack = FoggerClient.getFogpackManager().getAppliedFogpackInstance();
+
+    if (fogpack.getIdentifier().equals(FogpackManager.VANILLA_FOGPACK)) return;
+
+    int fogDistance = fogpack.getConfig().getFog().getDistance();
+    if (fogDistance < 0) {
+      //Fogger.LOGGER.info("The fog of Fogpack \"" + fogpack.getIdentifier() + "\" does not have a valid distance (0-32). Using 16 instead.");
+      return;
     }
 
-    @Inject(method = "applyFog", at = @At(value = "TAIL"))
-    private static void applyFog(Camera camera, BackgroundRenderer.FogType fogType, float viewDistance, boolean thickFog, float tickDelta, CallbackInfo ci) {
-        Fogpack fogpack = FogpackManager.getAppliedFogpack();
+    float fogStartMultiplier = (float) fogpack.getConfig().getFog().getStartMultiplier() / 100;
 
-        if (fogpack.getIdentifier().equals(FogpackManager.VANILLA_FOGPACK)) return;
+    /*
+    Entity entity = camera.getFocusedEntity();
+    BackgroundRenderer.StatusEffectFogModifier statusEffectFogModifier = getFogModifier(entity, tickDelta);
 
-        int fogDistance = fogpack.getConfig().getFog().getDistance();
-        if (fogDistance < 1) return;
+    if (fogDistance == 0 || statusEffectFogModifier != null) {
+      return;
+    }*/
 
-        Entity entity = camera.getFocusedEntity();
-
-        float fogStartMultiplier = (float) fogpack.getConfig().getFog().getStartMultiplier() / 100;
-
-        BackgroundRenderer.StatusEffectFogModifier statusEffectFogModifier = getFogModifier(entity, tickDelta);
-
-        if (fogDistance == 0 || statusEffectFogModifier != null) {
-            return;
-        }
-
-        if (camera.getSubmersionType() == CameraSubmersionType.NONE && (thickFog || fogType == BackgroundRenderer.FogType.FOG_TERRAIN)) {
-           RenderSystem.setShaderFogStart(fogDistance * 16 * fogStartMultiplier);
-           RenderSystem.setShaderFogEnd((fogDistance + 1) * 16);
-        }
+    if (camera.getSubmersionType() == CameraSubmersionType.NONE && (thickFog || fogType == BackgroundRenderer.FogType.FOG_TERRAIN)) {
+      RenderSystem.setShaderFogStart(fogDistance * 16 * fogStartMultiplier);
+      RenderSystem.setShaderFogEnd((fogDistance + 1) * 16);
     }
+  }
 }

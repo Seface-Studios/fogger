@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "name": "Swamp Lands",
   "identifier": "seface:swamp_lands",
-  "description": "What are you doing in my swamp?! (built-in)",
+  "description": "What are you doing in my swamp?!",
   "authors": ["Seface Studios"],
 
   "config": {
