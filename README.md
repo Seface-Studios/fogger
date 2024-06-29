@@ -11,6 +11,8 @@ A fork (and rewritten) of the original [1024-byteeeee's Kaleidoscope](https://gi
 2. Download the mod on official links and drop into your mods folder
   - [Modrinth](https://modrinth.com/mod/some-more-blocks)
 
+![Screenshot](.github/assets/banner.png)
+
 ## Fogpack Configuration
 Fog Packs can be created using a simple JSON file that must be imported into the Fogpacks folder located in `./minecraft/fogpacks/`.
 
@@ -32,7 +34,7 @@ Only files named `*.fogpack.json` will be recognized by the mod.
 
     "fog": {
       "color": "#FFFFFF" // Hexadecimal value of the color to be applied for the fog.
-      "distance": 16 // he distance (in chunks) the fog will be in relation to the player. Default: -1 (relative to Render Distance)
+      "distance": 16 // The distance (in chunks) the fog will be in relation to the player. Default: -1 (relative to Render Distance)
       "start_multiplier": 20 // The multipler (0-100) for the start distance in relation to the player. Default: 20
     },
     
