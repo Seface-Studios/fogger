@@ -16,7 +16,7 @@ public class Fogger implements ModInitializer {
   public static final String MOD_ID = "fogger";
   public static final String MOD_NAME = "Fogger";
   public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);
-  public static final MutableText MESSAGES_PREFIX = Text.literal("\uE100 | ");
+  public static final MutableText MESSAGES_PREFIX = Text.literal("Fogger | ");
 
   /* PATHS */
   public static final Path FOGPACK_CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("fogger.json");
