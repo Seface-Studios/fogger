@@ -1,6 +1,6 @@
 {
   "$schema": "https://www.sefacestudios.net/fogpack.schema.v1.json",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "Elden Ring",
   "identifier": "seface:elden_ring",
   "description": "I am the warrior jar known as Alexander. Iron Fist Alexander, in fact.",
@@ -12,6 +12,10 @@
     },
 
     "fog": {
+      "color": "#FFD879"
+    },
+
+    "clouds": {
       "color": "#FFD879"
     }
   }

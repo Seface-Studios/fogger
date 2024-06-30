@@ -17,7 +17,7 @@
   "commands.fogger.reset.success": "Using vanilla Fogpack.",
 
   // FOGGER RELOAD
-  "commands.fogger.reload.success": "All Fogpacks have been reloaded.",
+  "commands.fogger.reload.success": "All Fogpacks have been reloaded and updated.",
 
   // FOGGER INFO
   "commands.fogger.info.title": "%s • %s",

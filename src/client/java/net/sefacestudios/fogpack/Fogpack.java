@@ -23,6 +23,9 @@ public class Fogpack {
   @Setter
   private transient String path;
 
+  @Setter
+  private transient boolean isBuiltIn = false;
+
   private final transient Random random = new Random();
 
   private final FogpackConfiguration config = new FogpackConfiguration();

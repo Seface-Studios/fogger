@@ -1,14 +1,18 @@
 {
   "required": true,
   "package": "net.sefacestudios.mixin",
+  "minVersion": "0.8",
+  "refmap": "client-fogger.refmap.json",
   "compatibilityLevel": "JAVA_17",
-
   "client": [
     "BackgroundRendererMixin",
     "BiomeEffectsMixin",
-    "ClientWorldMixin"
+    "ClientWorldMixin",
+    //"WorldRendererMixin",
+    "particle.RainSplashParticleFactoryMixin",
+    //"particle.WaterBubbleParticleFactoryMixin",
+    "particle.WaterSplashParticleFactoryMixin"
   ],
-
   "injectors": {
     "defaultRequire": 1
   }

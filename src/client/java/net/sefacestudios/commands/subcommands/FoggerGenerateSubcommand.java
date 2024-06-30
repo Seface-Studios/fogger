@@ -11,7 +11,6 @@ import net.minecraft.util.Identifier;
 import net.sefacestudios.Fogger;
 import net.sefacestudios.FoggerClient;
 import net.sefacestudios.fogpack.Fogpack;
-import net.sefacestudios.fogpack.FogpackManager;
 import net.sefacestudios.utils.FoggerUtils;
 import net.sefacestudios.utils.SefaceStudiosMembers;
 

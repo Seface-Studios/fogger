@@ -3,13 +3,14 @@ package net.sefacestudios.fogpack;
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.Setter;
-import net.sefacestudios.Fogger;
 
 import java.awt.*;
 
 @Setter
 @Getter
 public class FogpackConfiguration {
+  private static transient final String COLOR_RGX_PATTERN = "^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$";
+
   private ColorConfiguration sky = new ColorConfiguration();
   private FogConfiguration fog = new FogConfiguration(-1, 20);
   private ColorConfiguration clouds = new ColorConfiguration();
@@ -32,15 +33,42 @@ public class FogpackConfiguration {
     }
 
     public String getHex() {
-      return this.color != null ? this.color : "";
+      return getHex(false);
+    }
+
+    public String getHex(boolean truncate) {
+      if (isValidColorPattern(this.color)) {
+        String color = truncate ? this.color.replace("#", "") : this.color;
+        return color;
+      }
+
+      return "";
     }
 
     public Integer getColor() {
-      return this.color != null ? Color.decode(this.color).getRGB() : null;
+      return isValidColorPattern(this.color) ? decodeHex(this.color).getRGB() : null;
     }
 
     public Integer getColor(int original) {
-      return this.color != null ? Color.decode(this.color).getRGB() : original;
+      return isValidColorPattern(this.color) ? decodeHex(this.color).getRGB() : original;
+    }
+
+    private static Color decodeHex(String hex) {
+      if (hex.startsWith("#")) {
+        hex = hex.substring(1);
+      }
+
+      if (hex.length() == 3) {
+        hex = "" + hex.charAt(0) + hex.charAt(0)
+                 + hex.charAt(1) + hex.charAt(1)
+                 + hex.charAt(2) + hex.charAt(2);
+      }
+
+      return Color.decode("#" + hex);
+    }
+
+    private static boolean isValidColorPattern(String color) {
+      return color != null && color.matches(COLOR_RGX_PATTERN);
     }
   }
 

@@ -9,17 +9,15 @@ import net.sefacestudios.Fogger;
 import net.sefacestudios.utils.FoggerUtils;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class FogpackManager {
   public static final String VANILLA_FOGPACK = "minecraft:vanilla";
-  private static final String FOG_PACK_SUFFIX = ".fogpack.json";
+  private static final String FOGPACK_SUFFIX = ".fogpack.json";
 
   @Getter
   private Fogpack appliedFogpackInstance = null;
@@ -31,6 +29,7 @@ public class FogpackManager {
   private final transient Configuration configuration;
 
   public FogpackManager() {
+    this.createFogpacksDirectory();
     this.loadOrReloadFogpacks();
     this.configuration = FoggerUtils.getData(Configuration.class, Fogger.FOGPACK_CONFIG_PATH);
     this.appliedFogpackInstance = this.getFogpackFromIdentifier(this.configuration.getAppliedFogpack());
@@ -72,11 +71,12 @@ public class FogpackManager {
       .registerBuiltInFogpack("elden_ring")
       .registerBuiltInFogpack("miami_vibes")
       .registerBuiltInFogpack("swamp_lands")
-      .loadOrReloadFogpacksFrom(gameDirFogpacksFolder);
+      .loadOrReloadFogpacksFrom(gameDirFogpacksFolder)
+      .printBuiltInFogpacks();
   }
 
   public FogpackManager registerBuiltInFogpack(String identifierPath) {
-    String builtIn = "/fogpacks/" + identifierPath + FOG_PACK_SUFFIX;
+    String builtIn = "/fogpacks/" + identifierPath + FOGPACK_SUFFIX;
 
     try (InputStream stream = Fogger.class.getResourceAsStream(builtIn)) {
       if (stream == null) {
@@ -93,7 +93,8 @@ public class FogpackManager {
           .concat(" (" + Text.translatable("pack.source.builtin").getString() + ")")
       );
 
-      Fogger.LOGGER.warn("The Fogpack \"" + fogpack.getIdentifier() + "\" was loaded as internally.");
+      fogpack.setBuiltIn(true);
+
       loadedFogpacks.add(fogpack);
     } catch (Exception ignored) {}
 
@@ -106,7 +107,7 @@ public class FogpackManager {
       return this;
     }
 
-    File[] fogpacks = directory.listFiles((dir, name) -> name.endsWith(FogpackManager.FOG_PACK_SUFFIX));
+    File[] fogpacks = directory.listFiles((dir, name) -> name.endsWith(FogpackManager.FOGPACK_SUFFIX));
 
     if (fogpacks == null) {
       Fogger.LOGGER.warn("No fogpacks were found in the directory: " + directory);
@@ -156,5 +157,24 @@ public class FogpackManager {
     }
 
     return null;
+  }
+
+  private void createFogpacksDirectory() {
+    try {
+      if (Files.notExists(Fogger.GAMEDIR_FOGPACKS_PATH)) {
+        Files.createDirectories(Fogger.GAMEDIR_FOGPACKS_PATH);
+        Fogger.LOGGER.info("The fogpacks folder was not identified within the game directory. Creating one...");
+      }
+    } catch (IOException ignored) {}
+  }
+
+  private void printBuiltInFogpacks() {
+    Fogger.LOGGER.info("The following Fogpacks were loaded internally (built-in).");
+
+    for (Fogpack fogpack : getLoadedFogpacks()) {
+      if (!fogpack.isBuiltIn()) continue;
+
+      Fogger.LOGGER.info("  - " + fogpack.getIdentifier() + "@v" + fogpack.getVersion());
+    }
   }
 }

@@ -7,15 +7,23 @@ import net.minecraft.text.Text;
 import net.sefacestudios.Fogger;
 import net.sefacestudios.FoggerClient;
 import net.sefacestudios.fogpack.Fogpack;
+import net.sefacestudios.fogpack.FogpackManager;
+import net.sefacestudios.utils.FoggerUtils;
 
 
 public class FoggerReloadSubcommand {
   public static int execute(CommandContext<FabricClientCommandSource> ctx) {
     ClientPlayerEntity player = ctx.getSource().getPlayer();
 
-    Fogpack fogpack = FoggerClient.getFogpackManager().getFogpackFromIdentifier(FoggerClient.getFogpackManager().getAppliedFogpackInstance().getIdentifier());
     FoggerClient.getFogpackManager().loadOrReloadFogpacks();
-    FoggerClient.getFogpackManager().applyFogpack(fogpack);
+
+    FogpackManager.Configuration config = FoggerUtils.getData(FogpackManager.Configuration.class, Fogger.FOGPACK_CONFIG_PATH);
+
+    Fogpack fogpack = FoggerClient.getFogpackManager().getFogpackFromIdentifier(config.getAppliedFogpack());
+    int waterColor = fogpack.getConfig().getWater().getColor() != null ? fogpack.getConfig().getWater().getColor() : 0;
+    boolean isSameWaterColor = FoggerClient.getFogpackManager().getConfiguration().getLatestWaterColor() == waterColor;
+
+    FoggerClient.getFogpackManager().applyFogpack(fogpack, isSameWaterColor);
 
     player.sendMessage(
       Fogger.MESSAGES_PREFIX.copy().append(

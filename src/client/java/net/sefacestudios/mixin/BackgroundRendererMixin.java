@@ -32,20 +32,9 @@ public abstract class BackgroundRendererMixin {
     if (fogpack.getIdentifier().equals(FogpackManager.VANILLA_FOGPACK)) return;
 
     int fogDistance = fogpack.getConfig().getFog().getDistance();
-    if (fogDistance < 0) {
-      //Fogger.LOGGER.info("The fog of Fogpack \"" + fogpack.getIdentifier() + "\" does not have a valid distance (0-32). Using 16 instead.");
-      return;
-    }
+    if (fogDistance < 0) return;
 
     float fogStartMultiplier = (float) fogpack.getConfig().getFog().getStartMultiplier() / 100;
-
-    /*
-    Entity entity = camera.getFocusedEntity();
-    BackgroundRenderer.StatusEffectFogModifier statusEffectFogModifier = getFogModifier(entity, tickDelta);
-
-    if (fogDistance == 0 || statusEffectFogModifier != null) {
-      return;
-    }*/
 
     if (camera.getSubmersionType() == CameraSubmersionType.NONE && (thickFog || fogType == BackgroundRenderer.FogType.FOG_TERRAIN)) {
       RenderSystem.setShaderFogStart(fogDistance * 16 * fogStartMultiplier);
